@@ -1,0 +1,14 @@
+.word{
+    font-family: "Impact", cursive, sans-serif;
+    font-size: 50px;
+    letter-spacing: 2.4px;
+    word-spacing: 4.2px;
+    color: #1917FF;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: italic;
+    font-variant: small-caps;
+    
+    transition: 1s;
+    
+  }

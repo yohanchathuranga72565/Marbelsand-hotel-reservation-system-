@@ -1,0 +1,41 @@
+.bg{
+    background:url('assets/images/sri-lanka.jpg');
+    background-repeat: no-repeat;
+    height:100%;
+    width:100%;
+    background-size:cover;
+}
+
+#log{
+    
+    padding:60px 40px;
+    margin-top:100px;
+    margin-bottom:100px;
+    -webkit-box-shadow: -5px -1px 43px 11px rgba(0,0,0,0.75);
+    -moz-box-shadow: -5px -1px 43px 11px rgba(0,0,0,0.75);
+    box-shadow: -5px -1px 43px 11px rgba(0,0,0,0.75);
+    background: white;
+    padding-top:10px;
+}
+
+img{
+    width:150px;
+}
+
+h1{
+    color:black;
+    text-align:center;
+    font-weight:bolder;
+    margin-top:20px;
+}
+
+label{
+    font-size:20px;
+    color:black;
+}
+
+
+
+.input-box{
+    border-radius:20px;
+}

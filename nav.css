@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+nav.navbar-dark{
+    background-color:rgba(0, 0, 0, 0.8);
+    height:auto;
+}
+
+.logo{
+    width:10;
+    height:10;
+}
+
+.nav-item{
+    font-weight: bold;
+}
+
+.nav-item:hover {
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    background-color:gray;
+    
+  }
+
+  .wordnav{
+    font-family: 'Pacifico', cursive;
+    font-size: 20px;
+    letter-spacing: 2.4px;
+    word-spacing: 4.2px;
+    color: rgb(248, 248, 248);
+    font-weight: 700;
+    text-decoration: none;
+    font-style: italic;
+    font-variant: small-caps;
+    
+    transition: 1s;
+    
+  }
+
+  
