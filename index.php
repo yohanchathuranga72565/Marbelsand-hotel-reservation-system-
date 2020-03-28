@@ -72,12 +72,21 @@ if(isset($_POST['reg_user'])){
     $password_2=mysqli_real_escape_string($connection,trim($_POST['password_2']));
     //no errors found adding new records
     $hashed_password=sha1($password_1);
-    $query="INSERT INTO login (email,pass_word,user_type) VALUES ('{$email}','{$hashed_password}','user')";
+    $vkey = md5(time().$email);
+    $query="INSERT INTO login (email,pass_word,user_type,vkey) VALUES ('{$email}','{$hashed_password}','user','{$vkey}')";
     $result_set1 = mysqli_query($connection,$query);
     
     if($result_set1){
         $_SESSION['flag']=1;
         //header('Location:index.php?user_added=true');
+        //sending verification email
+        $to=$email;
+        $subject="Email Verification";
+        $message="<a href='http://localhost/hotel reservation system/index.php?vkey=$vkey'>Register Account</a>";
+        $headers="From : marblesandsl@gmail.com \r\n";
+        $headers.="MIME-Version: 1.0" . "\r\n";
+        $headers.="Content-type:text/html;charset=UTF-8" . "\r\n";
+        mail($to,$subject,$message,$headers);
         header('Location:index.php');
         exit;
     }
@@ -91,6 +100,48 @@ if(isset($_POST['reg_user'])){
   }
  
 }
+
+
+    //email account verification
+    if(isset($_GET['vkey'])){
+        //process verification
+        $vkey = $_GET['vkey'];
+        $query="SELECT verified,vkey FROM login WHERE verified = 0 AND vkey = '$vkey' LIMIT 1";
+        $resultSet = mysqli_query($connection,$query);
+
+        if($resultSet!=null){
+            if(mysqli_num_rows($resultSet) == 1){
+                $query = "update login set verified = 1 where vkey = '$vkey' limit 1";
+                $resultSet1 = mysqli_query($connection,$query);
+                if($resultSet1){
+                    //echo "Your account has been verified.You may now log in.";
+                    $_SESSION['flag1']=0;
+                    header('Location:index.php');
+                    exit;
+                }
+                else{
+                    echo "Not updated as verified.Some error occured.";
+                    //$_SESSION['flag1']=1;
+                    //header('Location:index.php');
+                    //exit;
+                }
+            }
+            else{
+                echo "Invalid account/Account does not exist or already verified.";
+                $_SESSION['flag1']=2;
+                header('Location:index.php');
+                exit;
+            }
+        }
+        else{
+            echo "Account does not exist or already verified.";
+            //$_SESSION['flag1']=3;
+            //header('Location:index.php');
+            //exit;
+        }
+    }
+
+
 
 if(isset($_POST['login_user'])){
 
@@ -109,14 +160,30 @@ if(isset($_POST['login_user'])){
       if(mysqli_num_rows($result_set) == 1){
           //find a user
           $user=mysqli_fetch_assoc($result_set);
+          $verified = $user['verified'];
+          //header('Location:index.php');
+          //check whether the account is verified
+          if($verified == 1){
+          $_SESSION['user_type']=$user['user_type'];
           $_SESSION['user_id']=$user['user_id'];
           $_SESSION['email']=$user['email'];
-          $_SESSION['lflag']=1;
+          $email = $user['email'];
           $msg[]='login success';
-          //header('Location:index.php');
-          header('Location:index.php');
-          exit;
-          
+            if($_SESSION['user_type']=="user"){
+              header('Location:index.php');
+              exit;
+            }
+            if($_SESSION['user_type']=="admin"){
+              header('Location:admindashboard.php');
+              exit;
+            }
+          }
+          else{
+            $errors[]='This account has not yet been verified.An email has sent to $email you provided.';
+            $_SESSION['lflag']=1;
+            header('Location:index.php');
+            exit;
+          }
       }
       else{
         $_SESSION['lflag']=0;
@@ -157,6 +224,9 @@ include 'searchroom.php';
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+   
+  
     
     <title>Document</title>
 </head>
@@ -277,20 +347,19 @@ include 'searchroom.php';
               <div class='col-sm-4 offset-sm-2 col-12'>
                   
                         <label for="" style="color:white">Check-in</label>
-                        <div class='input-group date'>
-                        <input type='date' name="checkin" class="form-control" required>   
-                      </div>
-
+                        <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
+                          <input  class="form-control" name="checkin" type="text" readonly />
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        </div> 
               </div>
 
               <div class='col-sm-4 col-12'>
                   
                       <label for="" style="color:white">Check-out</label>
-                      <div class='input-group date'>
-                          <input type='date' id="picker" name="checkout" class="form-control" required>  
-                      
-                      
-                  </div>
+                      <div id="datepicker1" class="input-group date" data-date-format="yyyy-mm-dd">
+                          <input class="form-control" name="checkout" type="text" readonly />
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        </div> 
               </div>  
           </div>
 
@@ -632,8 +701,6 @@ include 'searchroom.php';
             </div>
         </div>
     <!--some explanation end-->
-
-    
 		
 		
 		
@@ -674,6 +741,18 @@ include 'searchroom.php';
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -692,6 +771,11 @@ include 'searchroom.php';
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    
+
+
+
     
 
     <script>
@@ -711,7 +795,12 @@ include 'searchroom.php';
           }
         );
         wow.init();
-    </script>
+
+       
+        </script>
+
+        
+        
 
      <?php
       echo '<script>';
@@ -721,7 +810,7 @@ include 'searchroom.php';
           if($_SESSION['flag']==1){
           echo 'swal({
             title: "Thank you!",
-            text: "Registered Successfully!",
+            text: "We have sent a verification email to the address provided.",
             icon: "success",
             button: "Ok",
           });';
@@ -756,6 +845,60 @@ include 'searchroom.php';
      echo '</script>';
     ?>
 
+
+    <?php
+      echo '<script>';
+      
+
+        if(isset($_SESSION['flag1'])){
+          if($_SESSION['flag1']==0){
+          echo 'swal({
+            title: "Thank you!",
+            text: "Your account has been verified.You may now log in.",
+            icon: "success",
+            button: "Ok",
+          });';
+          unset($_SESSION['flag1']);
+          //session_destroy();
+          }}
+          elseif($_SESSION['flag1']==1){
+            echo 'swal({
+              title: "Oops!",
+              text: "Not updated as verified.An error occured.",
+              icon: "error",
+              button: "Ok",
+            });';
+           //unset($_SESSION['flag1']);
+          }
+          
+           elseif($_SESSION['flag1']==2){
+            echo 'swal({
+              title: "Oops!",
+              text: "Invalid account or already verified.",
+              icon: "error",
+              button: "Ok",
+            });';
+           //unset($_SESSION['flag1']);
+
+        }else{
+          if($_SESSION['flag1']==3){
+          echo 'swal({
+            title: "Oops!",
+            text: "Account does not exist.",
+            icon: "error",
+            button: "Ok",
+          });';
+         unset($_SESSION['flag1']);
+         // session_destroy();
+         }
+        }
+
+         
+      
+     echo '</script>';
+    ?>
+
+
 <?php
       echo '<script>';
       if(isset($_SESSION['lflag'])){
@@ -768,7 +911,18 @@ include 'searchroom.php';
           });';
           
           //session_destroy();
-          }unset($_SESSION['lflag']);
+          }
+          if($_SESSION['lflag']==1){
+            echo 'swal({
+              title: "Oops",
+              text: "Unverified account.Check the inbox of the email you provided.",
+              icon: "error",
+              button: "Ok",
+            });';
+            
+            //session_destroy();
+            }
+          unset($_SESSION['lflag']);
          }
          else{
           unset($_SESSION['lflag']);
@@ -782,6 +936,27 @@ include 'searchroom.php';
       $(document).ready(function(){
           $('#roomtype').modal('show');
       });
+    </script>
+
+    <script>
+         $(function () {
+            $("#datepicker").datepicker({ 
+                  autoclose: true, 
+                  todayHighlight: true
+            }).datepicker('update', new Date());
+          });
+
+          $(function () {
+            $("#datepicker1").datepicker({ 
+                  autoclose: true, 
+                  todayHighlight: true
+                  
+            }).datepicker('update', new Date());
+          });
+
+          // for validation
+          
+          
     </script>
   
     

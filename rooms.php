@@ -1,4 +1,6 @@
-<?php session_start();?>
+<?php session_start();
+  include 'room_reservation_data_insert.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,9 +14,11 @@
     <link rel="stylesheet" type="text/css" href="nav.css">
     <link rel="stylesheet" type="text/css" href="footer.css">
     <link rel="stylesheet" type="text/css" href="rooms.css">
+
  
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
 
     <title>Document</title>
 </head>
@@ -204,6 +208,18 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -222,6 +238,7 @@
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
  
     <script>
       var wow = new WOW(
@@ -241,6 +258,26 @@
         );
         wow.init();
     </script>
+
+    <?php
+        echo '<script>';
+        if(isset($_SESSION['emailsent'])){
+                    if($_SESSION['emailsent']==1){ 
+                    echo 'swal({
+                    title: "Thank you!",
+                    text: "Reservation Successfully!",
+                    icon: "success",
+                    button: "Ok",
+                    });';
+                    
+                    //session_destroy();
+                    unset($_SESSION['emailsent']);}
+                }
+                
+                
+                unset($_SESSION['emailsent']);  
+            echo '</script>';
+            ?>
 
 </body>
 </html>

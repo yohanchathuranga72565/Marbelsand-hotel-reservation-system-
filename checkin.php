@@ -1,4 +1,5 @@
 <?php
+include 'connection.php';
 $checkin = date('Y-m-d', strtotime(0));
 $checkout = date('Y-m-d', strtotime(0));
 //$checkout=date();
@@ -27,8 +28,11 @@ $freerooms=0;
 if(isset($_POST['search'])){
    $checkin = mysqli_real_escape_string($connection,date('Y-m-d', strtotime($_POST['checkin'])));
    $checkout = mysqli_real_escape_string($connection,date('Y-m-d', strtotime($_POST['checkout'])));
-   $adults= mysqli_real_escape_string($connection,$_POST['adults']);
-   $children= mysqli_real_escape_string($connection,$_POST['children']);
+   $_SESSION['checkin']=$_POST['checkin'];
+   $_SESSION['checkout']=$_POST['checkout'];
+
+//    $adults= mysqli_real_escape_string($connection,$_POST['adults']);
+//    $children= mysqli_real_escape_string($connection,$_POST['children']);
    // $query1="SELECT * FROM room_reservation";
    
    // $result_set1 = mysqli_query($connection,$query1);

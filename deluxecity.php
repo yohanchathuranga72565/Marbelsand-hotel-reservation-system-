@@ -1,4 +1,70 @@
 <?php session_start();?>
+
+<?php 
+
+ include 'checkin.php';
+
+ if(isset($_SESSION['check'])){
+ echo '<div class="modal fade" id="roomtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="exampleModalLongTitle">Available Room Categories<br/>between ' .$checkin . ' and ' .$checkout . '</h5>
+    </div>
+     <div class="modal-body">
+       <div class="container-fluid">';
+     if($totalnoofroomsitem1<23){
+        $freerooms=23-$totalnoofroomsitem1;
+      echo '<div class="row">';
+             echo '<div class="col-12 pb-3 d-flex justify-content-center">';
+                 echo '<div class="card" style="width: 18rem;">';
+                     echo '<img src="assets\images\delux_city_facing.jpg" class="card-img-top img-responsive" alt="delux_city_facing">';
+                     echo '<div class="card-body">';
+                         echo '<p class="card-text"><b>Deluxe City Facing room</b><br/>';
+                         echo 'Max: 3 Person(s)<br/>';
+                         echo 'Max: 2 Child(s)<br/>' ;
+                         echo 'Get 10% discount by booking before 21st April 2020</br>';
+                         echo 'you have ' . $freerooms . ' free rooms </br>';
+                         echo '<span class="badge badge-pill badge-secondary">$135</span>';
+                         echo '<span class="badge badge-pill badge-secondary"><del>$150</del></span>'; 
+                         echo '</p>';
+                     echo '</div>';
+                     echo '<div class="card-footer d-flex justify-content-center">';
+                         echo '<a href="booknow.php?room_type=Deluxe city facing room" class="btn btn-sm btn-success">Book now</a>';
+                     echo '</div>';
+                 echo '</div>';
+
+             echo '</div>';
+             $freerooms=0;
+           
+         echo '</div>';
+     }
+     else{
+         ?>
+
+            <div class="row text-center text-danger">
+                <h6><b>You have no any rooms to book in the room type !...</b></h6>
+            </div>
+
+
+         <?php
+     } ?>
+     <?php
+       echo '</div>
+     </div>
+     <div class="modal-footer">
+       <a href="deluxecity.php" type="button" class="btn btn-success btn-sm">Close</a>
+     </div>
+  </div>
+ </div>
+</div>';
+unset($_SESSION['check']);
+
+}   
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,11 +80,15 @@
     <link rel="stylesheet" type="text/css" href="form.css">
     <link rel="stylesheet" type="text/css" href="map.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    
 
     <title>Document</title>
 </head>
 <body>
     <!-- Nav bar start-->
+    
+
     <?php include 'navbar.php';?>
     <!-- Nav bar end-->
 
@@ -44,6 +114,7 @@
             </div>
       </div>
         <hr/>
+
     <!--room courasol start-->
         <div class="container">
             <div class="row">
@@ -82,13 +153,51 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-8 offset-2">
-                    <a href="#" class="btn btn-sm btn-deep-orange">Book now</a>
+            
+        </div>
+    <!--room courasol end-->
+    <br><hr>
+    <!-- checkrooms start -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2><p>Check availability</p></h2>
+        </div>
+        </div>     
+   <div class="row">
+        <div class="offset-md-3 col-12 col-md-6">
+        <form action="deluxecity.php" method="POST">   
+        <div class="row">
+                    <div class="col-4 offset-1">
+                        <div class="form-group">
+                            <lable>Check_In_date</lable><br/>
+                            <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
+                                <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
+                                <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-4 offset-1">
+                        <div class="form-group">
+                            <lable>Check_Out_Date</lable><br/>
+                            <div id="datepicker1" class="input-group date" data-date-format="yyyy-mm-dd">
+                                <input class="form-control" id="check_out_date" name="checkout" type="text" readonly />
+                                <span class="input-group-addon"><i class="fa fa-calendar p-1 mt-1"></i></span>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
+
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button type="submit" name="search" class="btn btn-deep-orange btn-sm">Book Now</button>
+                        </div>
+                    </div>
+                    </form>
+        
             </div>
         </div>
-    <!--room courasol start-->
+
+     <!-- checkrooms end -->
     <!--about the room start-->
     <div class="container mt-5">
     <div class="row row-content">
@@ -193,6 +302,18 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -209,7 +330,34 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script> 
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script> 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
     
+
+    <script>
+         $(function () {
+            $("#datepicker").datepicker({ 
+                  autoclose: true, 
+                  todayHighlight: true
+            }).datepicker('update', new Date());
+          });
+
+          $(function () {
+            $("#datepicker1").datepicker({ 
+                  autoclose: true, 
+                  todayHighlight: true
+                  
+            }).datepicker('update', new Date());
+          });
+
+          // for validation
+          
+          
+    </script>
+    <script>
+      $(document).ready(function(){
+          $('#roomtype').modal('show');
+      });
+    </script>
+  
 </body>
 </html>

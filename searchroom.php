@@ -162,6 +162,8 @@
  </div>
 </div>';
 unset($_SESSION['check']);
+unset($_SESSION['checkin']);
+unset($_SESSION['checkout']);
 
 }
     

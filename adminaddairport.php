@@ -1,60 +1,60 @@
 <?php
     session_start();
 
-        $fname="";
-        $lname="";
-        $email="";
-        $pnumber="";
-        $vtype="";
-        $country="";
-        $amount="";
-        
-        if(isset($_POST['airport'])){
-            $fname=$_POST['fname'];
-            $lname=$_POST['lname'];
-            $email=$_POST['email'];
-            $pnumber=$_POST['pnumber'];
-            $vtype=$_POST['vtype'];
-            $country=$_POST['country'];
+    $fname="";
+    $lname="";
+    $email="";
+    $pnumber="";
+    $vtype="";
+    $country="";
+    $amount="";
 
-            $_SESSION['vtype']=$_POST['vtype'];
-            $_SESSION['date']=$_POST['date'];
-            $_SESSION['time']=$_POST['time'];
-            $_SESSION['fno']=$_POST['fno'];
-            $_SESSION['email2']=$_POST['email'];
-            $_SESSION['name']=$_POST['fname']." ".$_POST['lname'];
-            $_SESSION['pnumber']=$_POST['pnumber'];
-            $_SESSION['country']=$_POST['country'];
-            $_SESSION['age']=$_POST['age'];
-
-            
-
-            if($vtype=="Budget"){
-                $amount=50;
-            }
-            elseif($vtype=="City"){
-                $amount=60;
-            }
-            elseif($vtype=="Car"){
-                $amount=70;
-            }
-            elseif($vtype=="Minivan"){
-                $amount=80;
-            }
-            elseif($vtype=="Van"){
-                $amount=90;
-            }
-            
-            $_SESSION['amount']=$amount;
+    if(isset($_POST['adddata'])){
+        $fname=$_POST['fname'];
+        $lname=$_POST['lname'];
+        $email=$_POST['email'];
+        $pnumber=$_POST['pnumber'];
+        $vtype=$_POST['vtype'];
+        $country=$_POST['country'];
+        $payment_type=$_POST['payment_type'];
 
 
-    
+        $_SESSION['vtype']=$_POST['vtype'];
+        $_SESSION['date']=$_POST['date'];
+        $_SESSION['time']=$_POST['time'];
+        $_SESSION['fno']=$_POST['fno'];
+        $_SESSION['email2']=$_POST['email'];
+        $_SESSION['name']=$_POST['fname']." ".$_POST['lname'];
+        $_SESSION['pnumber']=$_POST['pnumber'];
+        $_SESSION['country']=$_POST['country'];
+        $_SESSION['age']=$_POST['age'];
+
+        $_SESSION['payment_type']=$_POST['payment_type'];
+
+        if($vtype=="Budget"){
+            $amount=50;
         }
-    
+        elseif($vtype=="City"){
+            $amount=60;
+        }
+        elseif($vtype=="Car"){
+            $amount=70;
+        }
+        elseif($vtype=="Minivan"){
+            $amount=80;
+        }
+        elseif($vtype=="Van"){
+            $amount=90;
+        }
+        
+        $_SESSION['amount']=$amount;
 
-    
+        if($_POST['payment_type']=="online"){
+            
+            
 
-    ?>
+
+            ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,8 +80,8 @@
 
     <form method="post" action="https://sandbox.payhere.lk/pay/checkout"> 
         <input type="hidden" name="merchant_id" value="1213654">    <!-- Replace your Merchant ID -->
-        <input type="hidden" name="return_url" value="http://localhost/hotel reservation system/airportpickup.php">
-        <input type="hidden" name="cancel_url" value="http://localhost/hotel reservation system/airportpickup_booking.php">
+        <input type="hidden" name="return_url" value="http://localhost/hotel reservation system/adminairportshow.php">
+        <input type="hidden" name="cancel_url" value="http://localhost/hotel reservation system/adminairportshow.php">
         <input type="hidden" name="notify_url" value="">  
         <input type="hidden" name="order_id">
         <input type="hidden" name="items" placeholder="Room Type"><br>
@@ -172,3 +172,15 @@
     
 </body>
 </html>
+
+
+
+        
+        <?php   
+    }
+    else{
+        include 'admin_airport_data_insert.php';
+        header('Location:adminairportshow.php'); 
+    }
+    }
+?>

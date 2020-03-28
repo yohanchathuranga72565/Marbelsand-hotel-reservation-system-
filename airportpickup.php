@@ -1,4 +1,139 @@
-<?php session_start();?>
+<?php session_start();
+
+include 'connection.php';
+if(isset($_GET['order_id']) && isset($_SESSION['name'])){
+    if(isset($_SESSION['email'])){
+        $type="registered";
+    }
+    else{
+        $type="unregistered";
+    }
+
+    $query="INSERT INTO customer (customer_type,name,email,contact_no,age,country) VALUES ('{$type}','{$_SESSION['name']}','{$_SESSION['email2']}','{$_SESSION['pnumber']}','{$_SESSION['age']}','{$_SESSION['country']}')";
+    $result_set = mysqli_query($connection,$query);
+
+    $query1="SELECT * FROM vehicle_reservation WHERE pick_up_date='{$_SESSION['date']}'";
+    $result_set1 = mysqli_query($connection,$query1);
+
+
+//     if($result_set1){
+//         if(mysqli_num_rows($result_set1)>0){
+//             foreach($result_set1 as $row){
+//             $bookvehicle[]=$row['vehicle_id'];
+//         }    
+//     }
+//         echo 'run 1';
+// }
+    
+    $query2="SELECT * FROM vehicle";
+    $result_set2 = mysqli_query($connection,$query2);
+    
+    // if(mysqli_num_rows($result_set2)>0){
+    //     foreach($result_set2 as $row){
+    //         $vehicle_id[]=$row['vehicle_id'];
+    //     }
+    //     echo 'run 2';
+    // }
+    $setvehicle=0;
+    $customer_id=0;
+    $payment_id=0;
+    // if(mysqli_num_rows($result_set1)>0){
+        foreach($result_set1 as $bovehicle){
+            foreach($result_set2 as $vehicle){
+                if(($bovehicle['vehicle_id']!=$vehicle['vehicle_id']) && ($_SESSION['vtype']==$vehicle['vehicle_type']) ){
+                    $setvehicle=$vehicle['vehicle_id'];
+                    break;
+                }
+            }
+        }
+    // }
+    // else{
+    //     foreach($result_set2 as $vehicle){
+    //         if($_SESSION['vtype']==$vehicle['vehicle_type']){
+    //             $setvehicle=$vehicle['vehicle_id'];
+    //         }
+    //     }
+    // }
+
+    $query3="SELECT * FROM customer";
+    $result_set3 = mysqli_query($connection,$query3);
+    if(mysqli_num_rows($result_set3)>0){
+        foreach($result_set3 as $row){
+            $customer_id=$row['customer_id'];
+        }
+    }
+    if(mysqli_num_rows($result_set1)>0){
+        if($setvehicle!=0){
+            $query4="INSERT INTO vehicle_reservation (vehicle_id,customer_id,flight_no,pick_up_date,pick_up_time) VALUES ('{$setvehicle}','{$customer_id}','{$_SESSION['fno']}','{$_SESSION['date']}','{$_SESSION['time']}')";
+            $result_set4 = mysqli_query($connection,$query4);
+            
+        }
+        else{
+            echo 'no vehicle';
+        }
+    }
+    else{
+        foreach($result_set2 as $vehicle){
+            if($_SESSION['vtype']==$vehicle['vehicle_type']){
+                $setvehicle=$vehicle['vehicle_id'];
+                $query4="INSERT INTO vehicle_reservation (vehicle_id,customer_id,flight_no,pick_up_date,pick_up_time) VALUES ('{$setvehicle}','{$customer_id}','{$_SESSION['fno']}','{$_SESSION['date']}','{$_SESSION['time']}')";
+                $result_set4 = mysqli_query($connection,$query4);
+            }
+        }
+
+    }
+
+    $query5="SELECT * FROM vehicle_reservation";
+    $result_set5 = mysqli_query($connection,$query5);
+
+    
+    $reserve_id=0;
+    if(mysqli_num_rows($result_set5)>0){
+        foreach($result_set5 as $row){
+            $reserve_id=$row['vehicle_reservation_id'];
+        }
+    }
+    $query6="INSERT INTO payment (customer_id,reservation_id,amount,payment_method) VALUES ('{$customer_id}','{$reserve_id}','{$_SESSION['amount']}','online')";
+    $result_set6 = mysqli_query($connection,$query6);
+
+    
+
+    $query7="SELECT * FROM payment";
+    $result_set7 = mysqli_query($connection,$query7);
+    if(mysqli_num_rows($result_set7)>0){
+        foreach($result_set7 as $row){
+            $payment_id=$row['payment_id'];
+        }
+    }
+
+    $query8="UPDATE vehicle_reservation SET payment_id='{$payment_id}' WHERE customer_id='{$customer_id}'";
+    $query_run=mysqli_query($connection,$query8);
+
+    // header('Location:airportpickup.php');
+
+    include 'airportEmail.php';
+
+
+    unset($_SESSION['vtype']);
+    unset($_SESSION['date']);
+    unset($_SESSION['time']);
+    unset($_SESSION['fno']);
+    unset($_SESSION['email2']);
+    unset($_SESSION['name']);
+    unset($_SESSION['pnumber']);
+    unset($_SESSION['country']);
+    unset($_SESSION['age']);
+    unset($_SESSION['amount']);
+
+   
+
+
+    // header('Location:airportpickup.php');
+    
+
+}
+
+?>
 
 
 <!DOCTYPE html>
@@ -16,6 +151,8 @@
     <link rel="stylesheet" type="text/css" href="airportpickup.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
 
 
     <title>Document</title>
@@ -218,29 +355,30 @@
                             <div class="row">
                                 <div class="col-12 col-md-6 form-group">
                                     <lable><b>Pick up date:</b></lable>
-                                    <div class='input-group date'>
-                                        <input type='date' class="form-control input-box form-rounded">   
-                                    </div>
+                                    <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
+                                        <input  class="form-control" id="check_in_date" name="date" type="text" readonly /> 
+                                        <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
+                                    </div> 
                                 </div>
                                 <div class="col-12 col-md-6 form-group">
                                     <lable><b>Pick up time:</b></lable>
-                                    <div class='input-group time'>
-                                        <input type='time' class="form-control input-box form-rounded">   
-                                    </div>
+                                    
+                                    <input type='time' class="form-control input-box form-rounded" name="time" placeholder="Flight Number">
+                                      
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Flight number:</b></lable>
-                                    <input type='text' class="form-control input-box form-rounded" placeholder="Flight Number">
+                                    <input type='text' class="form-control input-box form-rounded" name="fno" placeholder="Flight Number">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Email:</b></lable>
-                                    <input type='email' name='email' class="form-control input-box form-rounded" placeholder="Email">
+                                        <input type='email' name='email' class="form-control input-box form-rounded"  placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?>>
                                 </div>
                             </div>
                     
@@ -248,13 +386,20 @@
 
                             <div class="row">
                                 <div class="col-12 form-group">
-                                    <lable><b>Your Name:</b></lable>
+                                    
                                     <div class="row">
-                                    <div class="col-6">
+                                    
+                                    <div class="col-4">
+                                    <lable><b>First Name:</b></lable><br/>
                                     <input type='text'name="fname" class="form-control input-box form-rounded" placeholder="first name" required>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
+                                    <lable><b>First Name:</b></lable><br/>
                                     <input type='text' name="lname" class="form-control input-box form-rounded" placeholder="last name" required>
+                                    </div>
+                                    <div class="col-4">
+                                    <lable><b>Age:</b></lable><br/>
+                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" required>
                                     </div>
                                     </div>
                                 </div>
@@ -323,7 +468,20 @@
                         <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/"><i class="fa fa-twitter fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
+
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -341,6 +499,8 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
  
     <script>
       var wow = new WOW(
@@ -361,5 +521,32 @@
         wow.init();
     </script>
 
+<script>
+      $(function () {
+            $("#datepicker").datepicker({ 
+                  autoclose: true, 
+                  todayHighlight: true
+            }).datepicker('update', new Date());
+          });      
+    </script>
+<?php
+echo '<script>';
+if(isset($_SESSION['emailsent'])){
+            if($_SESSION['emailsent']==1){ 
+            echo 'swal({
+              title: "Thank you!",
+              text: "Reservation Successfully!",
+              icon: "success",
+              button: "Ok",
+            });';
+            
+            //session_destroy();
+            unset($_SESSION['emailsent']);}
+        }
+        
+           
+        unset($_SESSION['emailsent']);  
+     echo '</script>';
+    ?>
 </body>
 </html>

@@ -1,69 +1,4 @@
 <?php session_start();?>
-
-<?php 
-
- include 'checkin.php';
-
- if(isset($_SESSION['check'])){
- echo '<div class="modal fade" id="roomtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
- <div class="modal-dialog modal-dialog-centered" role="document">
-   <div class="modal-content">
-     <div class="modal-header">
-       <h5 class="modal-title" id="exampleModalLongTitle">Available Room Categories<br/>between ' .$checkin . ' and ' .$checkout . '</h5>
-    </div>
-     <div class="modal-body">
-       <div class="container-fluid">';
-       if($totalnoofroomsitem4<26){
-        $freerooms=26-$totalnoofroomsitem4;
-        echo '<div class="row">';
-            echo '<div class="col-12 pb-3 d-flex justify-content-center">';
-
-            echo '<div class="card" style="width: 18rem;">
-            <img src="assets\images\luxury_ocean_view.jpg" class="card-img-top img-responsive" alt="delux_city_facing">
-            <div class="card-body">
-              <p class="card-text"><b>Luxury Ocean View room</b><br/>
-              Max: 3 Person(s)<br/>
-              Max: 2 Child(s) <br/>
-              Get 10% discount by booking before 21st April 2020</br>';
-              echo 'you have ' . $freerooms . ' free rooms </br>';
-            echo '<span class="badge badge-pill badge-secondary">$108</span>
-            <span class="badge badge-pill badge-secondary"><del>$120</del></span> 
-            </p>
-            </div>
-
-            <div class="card-footer d-flex justify-content-center">
-            <a href="booknow.php?room_type=Luxury ocean view room" class="btn btn-sm btn-success">Book now</a>
-            </div>
-          </div>';
-
-            echo '</div>';
-            $freerooms=0;
-        echo '</div>';
-
-    }
-    else{
-        ?>
-
-           <div class="row text-center text-danger">
-               <h6><b>You have no any rooms to book in the room type !...</b></h6>
-           </div>
-
-
-        <?php
-    } ?>
-    <?php
-       echo '</div>
-     </div>
-     <div class="modal-footer">
-       <a href="luxuryocean.php" type="button" class="btn btn-success btn-sm">Close</a>
-     </div>
-  </div>
- </div>
-</div>';
-unset($_SESSION['check']);
-
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +14,7 @@ unset($_SESSION['check']);
     <link rel="stylesheet" type="text/css" href="form.css">
     <link rel="stylesheet" type="text/css" href="map.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css"/> -->
 
     <title>Document</title>
 </head>
@@ -87,31 +22,26 @@ unset($_SESSION['check']);
     <!-- Nav bar start-->
     <?php include 'navbar.php';?>
     <!-- Nav bar end-->
-
-    <!-- rooms header start-->
-    <div id="header" class="header">
-            <div class="row">
-                <div class="col-12 wordnav">
-                    <h1><b>Hotel Marble Sand<br/>
-                    Luxury Ocean View Room</b></h1>
-                    <div class="text-center">
-                      <img class="img-responsive mt-0" width="20%" src="assets\images\newlogo.png"  alt="logo">
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- rooms header end-->
+    
     <div class="container-fluid">
-      <div class="row">
+        <div class="row">
+                <ol class="col-12 breadcrumb">
+                    <li class="breadcrumb-item"></li>   
+                </ol>
+        </div>
+        <div class="row">
+                <ol class="col-12 breadcrumb">
+                    <li class="breadcrumb-item"></li>   
+                </ol>
+        </div>
+        <div class="row">
                 <ol class="col-12 breadcrumb">
                     <li class="breadcrumb-item"><a href="rooms.php">Rooms</a></li>
-                    <li class="breadcrumb-item active">Luxury Ocean View Room</li>
+                    <li class="breadcrumb-item active">Room reservation form</li>   
                 </ol>
-            </div>
-      </div>
+        </div>
+    </div>
         <hr/>
-        
-
     <!--room courasol start-->
         <div class="container">
             <div class="row">
@@ -129,10 +59,10 @@ unset($_SESSION['check']);
                     <!-- The slideshow -->
                     <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img class="d-block w-100 h-50 set" src="assets\images\gallery\room4.jpg" alt="Los Angeles" width="1100" height="500">
+                        <img class="d-block w-100 h-50 set" src="assets\images\gallery\room1.jpg" alt="Los Angeles" width="1100" height="500">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100 h-50 set" src="assets\images\gallery\bathroom4.jpg" alt="Chicago" width="1100" height="500">
+                        <img class="d-block w-100 h-50 set" src="assets\images\gallery\bathroom1.jpg" alt="Chicago" width="1100" height="500">
                     </div>
                     <div class="carousel-item">
                         <img class="d-block w-100 h-50 set" src="assets\images\gallery\balcony1.jpg" alt="New York" width="1100" height="500">
@@ -150,24 +80,86 @@ unset($_SESSION['check']);
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-8 offset-2">
+                    
+                </div>
+            </div>
         </div>
     <!--room courasol end-->
-    <br><hr>
-    <!-- checkrooms start -->
     <div class="row">
-        <div class="col-12 text-center">
-            <h2><p>Check availability</p></h2>
-        </div>
-        </div>     
-   <div class="row">
-        <div class="offset-md-3 col-12 col-md-6">
-        <form action="luxuryocean.php" method="POST">   
-        <div class="row">
+            <div class="offset-md-3 col-12 col-md-6">
+                <form action="room_booking.php" class="p-2" method="post">
+                    <div class="row ">
+                        <div class="col-12 text-center mt-5">
+                            <h2>personal Information</h2>
+                        </div>
+                    </div>
+
+                            <div class="row">
+                                <div class="col-12 form-group">
+                                    
+                                    <div class="row">
+                                    
+                                    <div class="col-4">
+                                    <lable><b>First Name:</b></lable><br/>
+                                    <input type='text'name="fname" class="form-control input-box form-rounded" placeholder="first name" >
+                                    </div>
+                                    <div class="col-4">
+                                    <lable><b>Last Name:</b></lable><br/>
+                                    <input type='text' name="lname" class="form-control input-box form-rounded" placeholder="last name">
+                                    </div>
+                                    <div class="col-4">
+                                    <lable><b>Age:</b></lable><br/>
+                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" >
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12 form-group">
+                                    <lable><b>Email:</b></lable>
+                                    <input type='email' name='email' class="form-control input-box form-rounded" placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?>>
+                                </div>
+                            </div>
+                    
+                            <div class="row">
+                                <div class="col-12 form-group">
+                                    <lable><b>Contact no:</b></lable>
+                                    <input type='text' name="pnumber" class="form-control input-box form-rounded" placeholder="Ex-0094123456789" >
+                                </div>
+                            </div>
+
+                             <div class="row">
+                                <div class="col-12 form-group">
+                                    <lable><b>Country:</b></lable>
+                                    <input type='text' name="country" class="form-control input-box form-rounded" placeholder="Ex-SriLanka">
+                                </div>
+                            </div>
+                             
+                            
+                            
+
+
+                    <div class="row ">
+                        <div class="col-12 text-center mt-5">
+                            <h2>Reservation Information</h2>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-12 form-group">
+                            <lable><b> Room Type:</b></lable>
+                                <input  class="form-control input-box form-rounded" id="roomtype" name="room_type" type="text" value="<?php echo $_GET['room_type'];?>" readonly />   
+                            </div>
+                        </div>
+
+                    <div class="row">
                     <div class="col-4 offset-1">
                         <div class="form-group">
                             <lable>Check_In_date</lable><br/>
                             <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
+                                <input  class="form-control" id="check_in_date" name="checkin" type="text" value=<?php echo $_SESSION['checkin']; unset($_SESSION['checkin']);?> readonly /> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
@@ -176,70 +168,77 @@ unset($_SESSION['check']);
                         <div class="form-group">
                             <lable>Check_Out_Date</lable><br/>
                             <div id="datepicker1" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input class="form-control" id="check_out_date" name="checkout" type="text" readonly />
+                                <input class="form-control" id="check_out_date" name="checkout" type="text" value=<?php echo $_SESSION['checkout']; unset($_SESSION['checkout']);?> readonly />
                                 <span class="input-group-addon"><i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
                     </div>
                 </div>
 
+                 <div class="row">
+                    <div class="col-12 form-group">
+                        
+                                <lable><b> No of Rooms:</b></lable>
+                                <select class="form-control w-100 input-box form-rounded" name="no_of_rooms">
+                                        
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        
+                                    </select>
+
+                    </div>
+                </div>
+ 
+                    
+            <div class="row">
+                    <div class="col-6 form-group">
+                        
+                        <lable><b> Adults:</b></lable>
+                        <select class="form-control w-100 input-box form-rounded" name="adults">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                                        
+                        </select>
+
+                    </div>
+
+                    <div class="col-6 form-group">
+                        
+                        <lable><b> Children:</b></lable>
+                        <select class="form-control w-100 input-box form-rounded" name="children">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>                           
+                        </select>
+                    </div>
+                    </div>
+        
+
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button type="submit" name="search" class="btn btn-deep-orange btn-sm">Book Now</button>
+                            <button type="submit" name="room" class="btn btn-deep-orange btn-sm">Confirm</button>
                         </div>
-                    </div>
-                    </form>
-        
+                    </div> 
+
+                </form>
+
+                
             </div>
         </div>
 
-     <!-- checkrooms end -->
-    <!--about the room start-->
-    <div class="container mt-5">
-    <div class="row row-content">
-            <div class="col-12">
-                <h2>Luxury Ocean View Room</h2>
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#peter"
-                        role="tab" data-toggle="tab">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#danny" role="tab"
-                        data-toggle="tab">Amenities</a>
-                    </li>
-                </ul>
-
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade show active" id="peter">
-                        <br/>
-                        <h3>About Hotel Marble Sand Hikkaduwa</h3>
-                        <p class="text-justify">Comfort, style and lavish accommodation units await you at the Hotel Marble Sand while there are 100 guestrooms.</p>
-                        <div class="row">
-                            <div class="col-6">
-                                <b>Special Rooms</b><br/>
-                                <ul>
-                                    <li>available</li>
-                                    <li>Max: 3 Person(s)</li>
-                                    <li>Max: 2 Child(s)</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="danny">
-                        <br/>
-                        <p class="text-justify">Located in the heart of Aspen with a unique blend of contemporary luxury and historic heritage, deluxe accommodations, superb amenities, genuine hospitality and dedicated service for an elevated experience in the Rocky Mountains.</p>
-                        
-                   
-                    </div>
-                </div>
 
 
-            </div>
-       </div>
-       </div>
-</div>
-    <!--about the room end-->
+
+
+
+    
+    
 
      <!-- footer start-->
      <footer class="footer mt-5">
@@ -304,9 +303,10 @@ unset($_SESSION['check']);
  <script src="node_modules/jquery/dist/jquery.slim.min.js"></script>
     <script src="node_modules/jquery/dist/jquery.min.js"></script> 
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-    <script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>  -->
+
+    <!-- <script>
          $(function () {
             $("#datepicker").datepicker({ 
                   autoclose: true, 
@@ -325,12 +325,7 @@ unset($_SESSION['check']);
           // for validation
           
           
-    </script>
-    <script>
-      $(document).ready(function(){
-          $('#roomtype').modal('show');
-      });
-    </script>
+    </script> -->
 
     
 </body>

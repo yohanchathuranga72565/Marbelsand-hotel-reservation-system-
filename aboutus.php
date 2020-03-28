@@ -240,6 +240,18 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             

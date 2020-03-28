@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="footer.css">
     <link rel="stylesheet" type="text/css" href="gallery.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
   
     <link rel="stylesheet" href="css/style.css">
 
@@ -51,275 +52,127 @@
         <hr/>
 
     <!-- gallery start-->
-        <div class="container">
+    <div class="container">
             <div class="container gallery-container">
-                <div class="tz-gallery wow slideInUp">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\balcony1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\balcony1.jpg" alt="balcony" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Balcony</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\balcony2.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\balcony2.jpg" alt="balcony" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Balcony</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\balcony4.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\balcony4.jpg" alt="balcony" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Balcony</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                <div class="tz-gallery">
+                    <div class="row">
 
-                    </div>
 
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\bathroom1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\bathroom1.jpg" alt="bathroom" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Bathroom</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\bathroom2.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\bathroom2.jpg" alt="bathroom" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Bathroom</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\bathroom3.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\bathroom3.jpg" alt="bathroom" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Bathroom</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
 
-                    </div>
+    <?php
+        $file_list = scandir('images/');
+        $i=0;
+        $img_per_page=12;
+        if(isset($_GET['p'])){
+            $page_no=$_GET['p'];
+            // $i=(($page_no-1)*$img_per_page);
+        }
+        else{
+            $page_no=1;
+            // $i=0;
+        }
+        if($page_no==1){
+            $img_per_page=14;
+        }
+        else{
+            $img_per_page=12;
+        }
+        $start=(($page_no-1)*$img_per_page)+1;
+        foreach ($file_list as $file){
+            $i=$i+1;
+            $row=0;
+            if(substr($file, strlen($file)-3)=='jpg' || substr($file, strlen($file)-3)=='jpeg'){
+                if($start<=$i && $i<=$img_per_page*$page_no){
+        ?>
+                <div class="col-md-4 float-left pb-4">
+                        <div class="card wow slideInUp">
+                        <?php
+                        
+                            echo '<a href="images/'.$file.'" class="lightbox">';
+                                
+                                echo '<img src="images/'.$file.'" alt="balcony" class="card-img-top zoom">';
+                                ?>
+                                <!-- <div class="card-body">
+                                    <p class="card-text"><b>Balcony</b>  
+                                    </p>
+                                </div> -->
+                            </a>
+                            
+                        </div>
+                        <?php
+                            if(isset($_SESSION['user_type'])){
+                                if($_SESSION['user_type']=="admin"){
 
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\bathroom4.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\bathroom4.jpg" alt="bathroom" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Bathroom</b>  
-                                        </p>
-                                    </div>
-                                </a>
+     
+                            ?>
+                            <div class="text-center">
+                                <a href="galleryimagedelete.php?id=<?php echo $i;?>" type="button"  class="btn btn-danger btn-sm" >Delete image</a>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\bathroom5.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\bathroom5.jpg" alt="bathroom" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Bathroom</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\beach.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\beach.jpg" alt="beach" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Beach</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                            <?php
+                                }
+                                
+                            }
+                            ?>
+                 </div>
 
-                    </div>
 
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\carpark.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\carpark.jpg" alt="carpark" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Carpark</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\garden1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\garden1.jpg" alt="garden" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Garden</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\garden2.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\garden2.jpg" alt="garden" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Garden</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
+                
+        <?php        
+        // echo '<img src="images/'.$file.'">';
+                }
 
-                    </div>
-
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\gym1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\gym1.jpg" alt="gym" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Gym</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\room1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\room1.jpg" alt="room" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Room</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\room2.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\room2.jpg" alt="room" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Room</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\room3.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\room3.jpg" alt="room" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Room</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\room4.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\room4.jpg" alt="room" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Room</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\swimming.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\swimming.jpg" alt="swimming" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Swimming Pool</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row mb-3 wow slideInUp">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\tennis1.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\tennis1.jpg" alt="tennis" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Tennis Court</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\tennis2.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\tennis2.jpg" alt="tennis" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Tennis Court</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <a href="assets\images\gallery\sunset.jpg" class="lightbox">
-                                    <img src="assets\images\gallery\sunset.jpg" alt="sunset" class="card-img-top zoom">
-                                    <div class="card-body">
-                                        <p class="card-text"><b>Sunset</b>  
-                                        </p>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
+            }
+            
+        }
+    
+    ?>
 
                 </div>
             </div>
         </div>
+    </div>
+
+    <?php 
+        //first page
+        $first="<a href=\"gallery.php?p=1\">First</a>";
+
+        //last page
+        $last_page_no=ceil($i/$img_per_page);
+        $last="<a href=\"gallery.php?p={$last_page_no}\">Last</a>";
+
+        //next page
+        if($page_no>=$last_page_no){
+            $next="<a>Next</a>";
+        }
+        else{
+            $next_page_no=$page_no+1;
+            $next="<a href=\"gallery.php?p={$next_page_no}\">Next</a>";
+        }
+
+        //previous page
+        if($page_no<=1){
+            $prev="<a>Previous</a>";
+        }
+        else{
+            $prev_page_no=$page_no-1;
+            $prev="<a href=\"gallery.php?p={$prev_page_no}\">Previous</a>";
+        }
+    ?>
+    <div class="row mb-3">
+        <div class="col-12  text-center bg-dark text-light"> 
+            <?php echo $first .' | '. $prev .' | Page '. $page_no . ' of ' .$last_page_no.' | '. $next .' | '. $last ;?>
+        </div>
+    </div>
         
     <!-- gallery end-->
 
      <!-- footer start-->
+    <div class="container">
+        <div class="row">
+
+        </div>
+
+    </div>
      <footer class="footer">
         <div class="container">
             <div class="row">             
@@ -355,6 +208,18 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
+                    <?php
+                        if(isset($_SESSION['user_type'])){
+                            if($_SESSION['user_type']=="admin"){
+                                ?>
+                                <br>
+                                <div class="text-center">
+                                    <a href="admindashboard.php">Get admin panel</a>
+                                </div>
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -373,6 +238,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.11.0/baguetteBox.min.js"></script>
 <script src="gallery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
  
     <script>
       var wow = new WOW(
@@ -392,5 +258,35 @@
         );
         wow.init();
     </script>
+    <?php
+      echo '<script>';
+      
+
+         if(isset($_SESSION['del'])){
+            if($_SESSION['del']==1){ 
+            echo 'swal({
+              title: "Deleted!",
+              text: "Image deletion is success!",
+              icon: "success",
+              button: "Ok",
+            });';
+            
+            //session_destroy();
+            unset($_SESSION['del']);}
+            else{
+                echo 'swal({
+                    title: "Oops!",
+                    text: "Image is not delete!",
+                    icon: "error",
+                    button: "Ok",
+                  });';
+                  
+                  //session_destroy();
+                  unset($_SESSION['del']);}
+            }
+           
+         
+     echo '</script>';
+    ?>
 </body>
 </html>
