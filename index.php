@@ -9,16 +9,19 @@ $email='';
 $password_1='';
 $password_2='';
 $flag=0;
+$pno='';
+$user_id=0;
 
 
 
 if(isset($_POST['reg_user'])){
-  $name=trim($_POST['name']);
+  $name=trim($_POST['fname']).' '.trim($_POST['lname']);
+  $pno=trim($_POST['pno']);
   $email=trim($_POST['email']);
   $password_1=trim($_POST['password_1']);
   $password_2=trim($_POST['password_2']);
   
-  if(empty(trim($_POST['name']))){
+  if(empty(trim($_POST['lname']))){
     $errors[]='Name is required';
   }
   if(empty(trim($_POST['email']))){
@@ -34,7 +37,7 @@ if(isset($_POST['reg_user'])){
   //checking max length
  
       
-        if(strlen(trim($_POST['name'])) > 50){
+        if(strlen(trim($name)) > 50){
             $errors[]=  ' must be less than 50 characters';
         }
         if(strlen(trim($_POST['email'])) > 100){
@@ -75,7 +78,16 @@ if(isset($_POST['reg_user'])){
     $vkey = md5(time().$email);
     $query="INSERT INTO login (email,pass_word,user_type,vkey) VALUES ('{$email}','{$hashed_password}','user','{$vkey}')";
     $result_set1 = mysqli_query($connection,$query);
-    
+
+    $query11="SELECT user_id FROM login WHERE email='{$email}'";
+    $result_set11=mysqli_query($connection,$query11);
+    foreach($result_set11 as $row11){
+      $user_id=$row11['user_id'];
+    }
+
+    $query111="INSERT INTO registered_customer (user_id,name,contact_no,email) VALUES ('{$user_id}','{$name}','{$pno}','{$email}')";
+    $result_set111 = mysqli_query($connection,$query111);
+
     if($result_set1){
         $_SESSION['flag']=1;
         //header('Location:index.php?user_added=true');
@@ -169,11 +181,18 @@ if(isset($_POST['login_user'])){
           $_SESSION['email']=$user['email'];
           $email = $user['email'];
           $msg[]='login success';
+          $query10="UPDATE login SET last_login=NOW() WHERE email='{$_SESSION['email']}'";
+          $result_set10=mysqli_query($connection,$query10);
+
+          if(!$result_set10){
+            echo 'query10 is failed';
+          }
+
             if($_SESSION['user_type']=="user"){
               header('Location:index.php');
               exit;
             }
-            if($_SESSION['user_type']=="admin"){
+            if(($_SESSION['user_type']=="admin") || ($_SESSION['user_type']=="receptionist")){
               header('Location:admindashboard.php');
               exit;
             }
@@ -473,18 +492,27 @@ include 'searchroom.php';
             <div class="modal-body mx-3">
               <div class="md-form mb-5">
                 <i class="fa fa-user prefix grey-text"></i>
-                <input type="text"  name="name" class="form-control validate" placeholder="Your name" required <?php echo 'value=' . $name ;?> >
-
+                  <input type="text"  name="fname" class="form-control validate" placeholder="Your first name" required <?php echo 'value=' . $name ;?> >
               </div>
+
+              <div class="md-form mb-5">
+                <i class="fa fa-user prefix grey-text"></i>
+                  <input type="text"  name="lname" class="form-control validate" placeholder="Your last name" required <?php echo 'value=' . $name ;?> >
+              </div>
+
               <div class="md-form mb-5">
                 <i class="fa fa-envelope prefix grey-text"></i>
                 <input type="email" name="email" class="form-control validate"  placeholder="Your email" required <?php echo 'value=' . $email ;?> >
               </div>
 
+              <div class="md-form mb-5">
+                <i class="fa fa-phone prefix grey-text"></i>
+                <input type="text" name="pno" class="form-control validate"  placeholder="Ex-: +94777123456" required <?php echo 'value=' . $pno ;?> >
+              </div>
+
               <div class="md-form mb-4">
                 <i class="fa fa-lock prefix grey-text"></i>
                 <input type="password" name="password_1"  class="form-control validate"  placeholder="Your password" required>
-              
               </div>
 
               <div class="md-form mb-4">

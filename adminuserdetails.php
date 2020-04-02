@@ -5,6 +5,13 @@ include 'connection.php';
     if(isset($_SESSION['user_type'])){
         if($_SESSION['user_type']=="admin"){
             //load the page
+            $filter='';
+            if(isset($_POST['filter'])){
+                $filter=$_POST['filterbox'];
+            }
+            else{
+                $filter='all';
+            }
         }
         else{
             header('Location:index.php'); 
@@ -44,53 +51,100 @@ include 'connection.php';
             <div class="card-body">
              
 
-            <?php 
-                $query="SELECT * FROM room_reservation";
-                $query_run=mysqli_query($connection,$query);
+            <?php
+                if($filter!='all'){ 
+                    $query="SELECT * FROM login WHERE user_type='{$filter}'";
+                    $query_run=mysqli_query($connection,$query);
+                    $name1='';
+                    $pno1='';
+                }
+                else{
+                    $query="SELECT * FROM login";
+                    $query_run=mysqli_query($connection,$query);
+                    $name1='';
+                    $pno1=''; 
+                }
             ?>
-            <h2 class="text-center">About Rooms Bookings</h2>
-            <div class="text-right">
-                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addmodal">Add new booking</button>
+            <h2 class="text-center">About User Details</h2>
+            <div class="row">
+            <div class="col-6 text-left">
+                <form action="adminuserdetails.php" method="POST">
+                Filter details:
+                <select class="form-control w-100 input-box form-rounded"  name="filterbox"> 
+                    <option value="all">All</option>
+                    <option value="admin">Admin</option>
+                    <option value="receptionist">Receptionist</option>
+                    <option value="user">User</option>
+                </select>
+                <button type="submit" name="filter" class="btn btn-success btn-sm">Filter</button>
+                </form>
+            </div>
+            <div class="col-6 text-right">
+                <br><br>
+                <button class="btn btn-success btn-sm mt-3" data-toggle="modal" data-target="#usermodal">Add</button>
+            </div>
             </div>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col">Reservation_Id</th>
-                        <th scope="col">Payment_Id</th>
-                        <th scope="col">Check_In_Date</th>
-                        <th scope="col">Check_Out_Date</th>
-                        <th scope="col">Customer_Id</th>
-                        <th scope="col">Room_No</th>
-                        <th scope="col">No_Guest</th>
-                        <th scope="col">Type_Id</th>
-                        <th scope="col">No_Of_Rooms</th>
-                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Contact No</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">User Type</th>
+                        <th scope="col">Last login</th>
+                        
+            
+                        <!-- <th scope="col"></th> -->
                         <th scope="col"></th>
                         </tr>
                     </thead>
 
                     <?php
+                        $flag=0;
 
                         if($query_run){
                             foreach($query_run as $row){
+                                if($row['user_type']=='admin'){
+                                    $query2="SELECT * FROM administrator WHERE email='{$row['email']}'";
+                                    $result_set2=mysqli_query($connection,$query2);
+                                    foreach($result_set2 as $row2){
+                                        $name1=$row2['name'];
+                                        $pno1=$row2['contact_no'];
+                                    }
+                                }
+                                else if($row['user_type']=='receptionist'){
+                                    $query2="SELECT * FROM receptionist WHERE email='{$row['email']}'";
+                                    $result_set2=mysqli_query($connection,$query2);
+                                    foreach($result_set2 as $row2){
+                                        $name1=$row2['name'];
+                                        $pno1=$row2['contact_no'];
+                                    }
+                                }
+                                else if($row['user_type']=='user'){
+                                    $query2="SELECT * FROM registered_customer WHERE email='{$row['email']}'";
+                                    $result_set2=mysqli_query($connection,$query2);
+                                    foreach($result_set2 as $row2){
+                                        $name1=$row2['name'];
+                                        $pno1=$row2['contact_no'];
+                                    }
+                                }
                         ?>
                     <tbody action="adminbookshow.php" method="POST">
                         <tr>
-                            <td><?php echo $row['reservation_id']; ?></td>
-                            <td><?php echo $row['payment_id']; ?></td>
-                            <td><?php echo $row['check_in_date']; ?></td>
-                            <td><?php echo $row['check_out_date']; ?></td>
-                            <td><?php echo $row['customer_id']; ?></td>
-                            <td><?php echo $row['room_no']; ?></td>
-                            <td><?php echo $row['no_guest']; ?></td>
-                            <td><?php echo $row['type_id']; ?></td>
-                            <td><?php echo $row['no_of_rooms']; ?></td>
-                            <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</button></td>
-                            <td><a href=adminbookdelete.php?id=<?php echo $row['reservation_id'];?> type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
+                            <td><?php echo $name1; ?></td>
+                            <td><?php echo $pno1; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['user_type']; ?></td>
+                            <td><?php echo $row['last_login']; ?></td>
+                            
+                            <!-- <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</button></td> -->
+                            <td><a href="#" type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
                             
                         </tr>
                     </tbody>
                     <?php
+                                
+
                             }
                         }
                         else{
@@ -104,7 +158,7 @@ include 'connection.php';
         </div>
     </div>
     <!-- edit booking modal start-->
-    <div class="modal" id="editmodal" tabindex="-1" role="dialog">
+    <!-- <div class="modal" id="editmodal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -199,7 +253,7 @@ include 'connection.php';
             </form>
         </div>
         </div>
-        </div>
+        </div> -->
     
     <!-- edit room booking modal end-->
 
@@ -398,28 +452,28 @@ include 'connection.php';
 
  <!-- modal update start -->
  <script>
-        $(document).ready(function(){
-            $('.editbtn').on('click',function(){
-                $('#editmodal').modal('show');
+        // $(document).ready(function(){
+        //     $('.editbtn').on('click',function(){
+        //         $('#editmodal').modal('show');
 
-                $tr=$(this).closest('tr');
-                var data=$tr.children("td").map(function(){
-                    return $(this).text();
-                }).get();
+        //         $tr=$(this).closest('tr');
+        //         var data=$tr.children("td").map(function(){
+        //             return $(this).text();
+        //         }).get();
 
-                console.log(data);
+        //         console.log(data);
 
-                $('#reservation_id').val(data[0]);
-                $('#payment_id').val(data[1]);
-                $('#check_in_date').val(data[2]);
-                $('#check_out_date').val(data[3]);
-                $('#customer_id').val(data[4]);
-                $('#room_no').val(data[5]);
-                $('#no_guest').val(data[6]);
-                $('#type_id').val(data[7]);
-                $('#no_of_rooms').val(data[8]);
-            });
-        });
+        //         $('#reservation_id').val(data[0]);
+        //         $('#payment_id').val(data[1]);
+        //         $('#check_in_date').val(data[2]);
+        //         $('#check_out_date').val(data[3]);
+        //         $('#customer_id').val(data[4]);
+        //         $('#room_no').val(data[5]);
+        //         $('#no_guest').val(data[6]);
+        //         $('#type_id').val(data[7]);
+        //         $('#no_of_rooms').val(data[8]);
+        //     });
+        // });
     </script>
     <!-- modal update end -->   
          <script>

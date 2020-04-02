@@ -1,4 +1,7 @@
 <?php session_start();
+
+    include 'connection.php';
+
     if(isset($_SESSION['user_type'])){
         if($_SESSION['user_type']=="admin"){
             //load the page

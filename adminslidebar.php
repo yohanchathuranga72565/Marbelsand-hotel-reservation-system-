@@ -1,6 +1,44 @@
 
+<?php
 
-  <div class="d-flex" id="wrapper">
+$user='';
+$name='';
+$fname='';
+$lname='';
+$pno='';
+$email='';
+if(isset($_SESSION['user_type'])){
+  if($_SESSION['user_type']=="admin"){
+      //load the page
+      $query="SELECT * FROM administrator WHERE email='{$_SESSION['email']}'";
+      $result_set=mysqli_query($connection,$query);
+      if(mysqli_num_rows($result_set)>0){
+          foreach($result_set as $row){
+              $user=$row['name'];
+              $fname=explode(" ",$row['name'])[0];
+              $lname=explode(" ",$row['name'])[1];
+              $pno=$row['contact_no'];
+          }
+      }
+  }
+  else if($_SESSION['user_type']=="receptionist"){
+      //load the page
+      $query="SELECT name FROM receptionist WHERE email='{$_SESSION['email']}'";
+      $result_set=mysqli_query($connection,$query);
+      if(mysqli_num_rows($result_set)>0){
+          foreach($result_set as $row){
+              $user=$row['name'];
+              $fname=explode(" ",$row['name'])[0];
+              $lname=explode(" ",$row['name'])[1];
+              $pno=$row['contact_no'];
+          }
+      }
+  }
+}
+?>
+  <div class="d-flex"  id="wrapper">
+
+  
 
     <!-- Sidebar -->
     <div class="bg-dark border-right" id="sidebar-wrapper">
@@ -8,7 +46,7 @@
       <div class="sidebar-heading text-light"><b>Adimin Panel</b></div>
       <div class="text-light">
         <img class="img-responsive mt-0" width="20%" src="admin/image/login.png" alt="login">
-        admin name
+        <?php echo $user;?>
       </div>
       <div class="list-group list-group-flush mt-3">
         <a href="admindashboard.php" class="list-group-item list-group-item-action bg-danger text-warning"><b>Dashboard</b></a>
@@ -25,23 +63,16 @@
 
 
         </div>
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-light" data-toggle="collapse" data-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser"><i class="fa fa-user-circle"></i> User Login Details</a>
-            <div class="collapse" id="collapseUser">
-              <a href="#" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-user-secret"></i> Admin</a>
-              <a href="#" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-user-plus"></i> Receptionist</a>
-              <a href="#" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-user"></i> User</a>
-
-
-            </div>
+            <a href="adminuserdetails.php" class="list-group-item list-group-item-action bg-dark text-light"><i class="fa fa-user-circle"></i> User Login Details</a>
+            
             <a href="#" class="list-group-item list-group-item-action bg-dark text-light" data-toggle="modal" data-target="#usermodal"><i class="fa fa-plus"></i> Create Account</a>
       </div>
-    </div>
+  </div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
         <li id="menu-toggle"><span class="navbar-toggler-icon"></span></li>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +91,7 @@
               <i class="fa fa-cog"></i> Settings
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#"><i class="fa fa-user-circle"></i> Edit Profile</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editprofile"><i class="fa fa-user-circle"></i> Edit Profile</a>
                 <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off"></i> Logout</a>
                 <!-- <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a> -->
@@ -69,6 +100,7 @@
           </ul>
         </div>
       </nav>
+      
 
       <!-- add new admin or reciptionist start -->
       <div class="modal" id="usermodal" tabindex="-1" role="dialog">
@@ -147,6 +179,59 @@
         </div>
       </div>
       <!-- add new admin or reciptionist end -->
+
+      <!-- edit profile modal start-->
+    <div class="modal" id="editprofile" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Room Reservation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="editprofile.php" method="POST">
+            <div class="modal-body">
+                <div class="row text-center">
+                  <div class="col-6 form-group">
+                      <lable><b>First Name:</b></lable>
+                      <input type='text' name='fname' class="form-control input-box form-rounded" value=<?php echo $fname;?> required>
+                  </div>
+                  <div class="col-6 form-group">
+                      <lable><b>Last Name:</b></lable>
+                      <input type='text' name='lname' class="form-control input-box form-rounded" value=<?php echo $lname;?> required>
+                  </div>
+                </div>
+
+                
+
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <lable><b>Contact No:</b></lable>
+                    <input type='text' name='pno' class="form-control input-box form-rounded" value=<?php echo $pno;?> required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <lable><b>Email:</b></lable>
+                    <input type='email' name='email' class="form-control input-box form-rounded" value=<?php echo $_SESSION['email'];?> required readonly>
+                  </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success btn-sm" name="editprofile">Save changes</button>
+            </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    
+    <!-- edit profile modal end-->
 
       
   

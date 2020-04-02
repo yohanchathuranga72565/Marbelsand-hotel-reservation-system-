@@ -1,8 +1,15 @@
 <?php session_start();
+    include 'connection.php';
+    $user='';
     if(isset($_SESSION['user_type'])){
         if($_SESSION['user_type']=="admin"){
             //load the page
+            
         }
+        else if($_SESSION['user_type']=="receptionist"){
+            //load the page
+        }
+        
         else{
             header('Location:index.php'); 
         }
@@ -10,6 +17,8 @@
     else{
         header('Location:index.php');
     }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -117,8 +126,8 @@
                             <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
                         </div>
                         <div class="card-footer bg-dark">
-                            <a href="#" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
-                            <a href="#" class="text-light text-left">Add  <i class="fa fa-plus-circle"></i></a></br>
+                            <a href="adminuserdetails.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
+                            <a href="#" class="text-light text-left" data-toggle="modal" data-target="#usermodal">Add  <i class="fa fa-plus-circle"></i></a></br>
                         </div>            
                 </div>
             </div>
@@ -176,6 +185,19 @@
                   //session_destroy();
                   unset($_SESSION['pass']);}
               }  
+
+        else if((isset($_SESSION['profileupdated']))){
+                if($_SESSION['profileupdated']==1){ 
+                echo 'swal({
+                title: "",
+                text: "Profile Updated!",
+                icon: "success",
+                button: "Ok",
+                });';
+                
+                //session_destroy();
+                unset($_SESSION['profileupdated']);}
+            }  
             echo '</script>';
             ?>
 
