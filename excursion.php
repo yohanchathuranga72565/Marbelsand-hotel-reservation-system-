@@ -1,4 +1,6 @@
-<?php session_start();?>
+<?php session_start();
+    include 'connection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="excursion.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
     <title>Document</title>
 </head>
 <body>
@@ -57,6 +60,194 @@
 
     <!--tours starts-->
     <div class="container">
+        <div class="row">
+    <?php
+        $idno=0;
+        
+        $data=file_get_contents("adminexcursion.json");
+        $data=json_decode($data,true);
+
+        $query0="SELECT excursion_id FROM excursion";
+        $query_run0=mysqli_query($connection,$query0);
+        $total_rows=mysqli_num_rows($query_run0);
+        $rows_per_page=9;
+
+        if(isset($_GET['p'])){
+                $page_no=$_GET['p']; 
+        }
+        else{
+            $page_no=1; 
+        }
+
+             
+        $start=($page_no-1) * $rows_per_page;
+
+
+        // $query="SELECT * FROM vehicle_reservation LIMIT {$start},{$rows_per_page}";
+        // $query_run=mysqli_query($connection,$query);
+
+        $query="SELECT * FROM excursion LIMIT {$start},{$rows_per_page}";
+        $result_set=mysqli_query($connection,$query);
+        if(mysqli_num_rows($result_set)){
+            foreach($result_set as $row){
+                $flag=0; 
+                $jsonarr=array();
+                foreach($data as $data1){
+                    if($data1!=""){
+                        if($data1["id"]==strval($row['excursion_id']) ){
+                            $jsonarr=$data1;
+                            $flag=1;
+                            }
+                    }
+                }
+                if($flag==0){
+                    continue;
+                }
+                ?>
+               
+                <div class="col-lg-4 col-md-4 col-sm-6  col-12 d-flex justify-content-center mt-1 float-left pb-4">
+                <div class="row wow slideInUp">
+                <div class="col-12">
+                    <a data-toggle="modal" data-target="<?php echo '#'.$idno; ?>">
+                    <div class="card bg-dark text-white">
+                        <img class="card-img dark" src="<?php echo $row['img_path']; ?>" alt="Card image" height="200px">
+                        <div class="card-img-overlay text-center p-3">
+                            <h5 class="card-title"><i><?php echo $row['topic']; ?></i></h5>
+                            <p class="card-text"><span class="badge  badge-pill badge-secondary"><?php echo $row['amount'].'$'; ?></span> Per Person<br>Click for more details</p>
+                        </div>
+                            
+                    </div>
+                    </a>  
+                </div>
+                <div class="row">
+                <div class="col-12">
+                <?php
+                    if(isset($_SESSION['user_type'])){
+                        if($_SESSION['user_type']=="admin"){
+
+     
+                            ?> 
+                        <div  class="col-12 text-center">
+                            <!-- <a href=adminexcursion.php?id=<?php echo $row['excursion_id'];?> type="button" class="btn btn-success btn-sm ml-3">Edit</a> -->
+                            <a href=excursiondelete.php?id=<?php echo $row['excursion_id'];?> type="button" class="btn btn-danger btn-sm ml-3">delete</a>
+                        </div>
+                        <?php
+                        }
+                    }
+                        ?>  
+                </div>
+                
+                </div>
+                </div>
+                </div>
+                
+                
+                
+                
+
+        <div class="modal fade" id="<?php echo $idno; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $row['topic']; ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-justify">
+
+                <p>
+                <b>Overview</b><br/>
+                <?php echo $jsonarr['overview']; ?>
+            
+                </p>
+                <ul>
+                <?php 
+                $arr=array();
+                $arr1=explode(".",$jsonarr['overview_point']);
+                $arr2=explode(".",$jsonarr['included_point']);
+                foreach($arr1 as $r1)
+                    {
+                        if(empty($r1)){
+                            continue;
+                        }
+                        ?>
+                        <li><?php echo $r1;?></li>
+                    <?php
+                    }
+                ?>
+                    
+
+                    
+                </ul>
+                <p>
+                    <b>What's included</b><br/>
+                    <ul>
+                    <?php
+                    foreach($arr2 as $r2)  
+                    {
+                        if(empty($r2)){
+                            continue;
+                        }
+                        ?>
+                        <li><?php echo $r2;?></li>
+                        
+                    <?php
+                    }
+                ?>
+                        
+                    </ul>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+            <?php
+                $idno=$idno + 1;
+            }
+        }
+    
+    ?>
+    <?php
+     //first page
+        $first="<a href=\"excursion.php?p=1\"><b>First</b></a>";
+
+        //last page
+        $last_page_no=ceil($total_rows/$rows_per_page);
+        $last="<a href=\"excursion.php?p={$last_page_no}\"><b>Last</b></a>";
+
+        //next page
+        if($page_no>=$last_page_no){
+            $next="<a><b>Next</b></a>";
+        }
+        else{
+            $next_page_no=$page_no+1;
+            $next="<a href=\"excursion.php?p={$next_page_no}\"><b>Next</b></a>";
+        }
+
+        //previous page
+        if($page_no<=1){
+            $prev="<a><b>Previous</b></a>";
+        }
+        else{
+            $prev_page_no=$page_no-1;
+            $prev="<a href=\"excursion.php?p={$prev_page_no}\"><b>Previous</b></a>";
+        }
+    ?>
+        
+        
+
+    </div>
+    
+    </div>
+    <div class="col-12  text-center  bg-dark text-light"> 
+            <?php echo $first .' | '. $prev .' | <b>Page  '. $page_no . ' of ' .$last_page_no.'</b> | '. $next .' | '. $last ;?>
+    </div>
+    <!-- <div class="container">
         <div class="row wow slideInUp">
           <div class="col-md-4 col-12 d-flex justify-content-center mt-1">
           <a data-toggle="modal" data-target="#Galle">
@@ -161,7 +352,7 @@
           </a>
           </div>
 
-        </div>
+        </div> -->
 
         <div class="row wow slideInRight">
             <div class="col-12 word text-center" style="color:black;">
@@ -172,7 +363,7 @@
 
     <!--Galle modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Galle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Galle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -216,12 +407,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Galle modal end-->
 
     <!--Whale modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Whale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Whale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -257,15 +448,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
+            </div>Bottled water
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Whale modal end-->
 
     <!--Udawalawa modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Park" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Park" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -306,12 +497,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Udawalawa modal end-->
 
     <!--Fish modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Fish" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Fish" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -348,12 +539,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Fish modal end-->
 
     <!--Seegiriya modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Seegiriya" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Seegiriya" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -393,12 +584,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Seegiriya modal end-->
 
     <!--Ella modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Ella" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Ella" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -437,12 +628,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Ella modal end-->
 
     <!--5day modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="5day" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="5day" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -486,12 +677,12 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--5day modal end-->
 
     <!--Tuk modal start-->
         <!-- Modal -->
-        <div class="modal fade" id="Tuk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <!-- <div class="modal fade" id="Tuk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -523,7 +714,7 @@
             </div>
             </div>
         </div>
-        </div>
+        </div> -->
     <!--Tuk modal end-->
 
     <!--tours end-->
@@ -534,13 +725,13 @@
                 <div class="col-4 offset-1 col-sm-2">
                     <h5>Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="index.php" class="item">Home</a></li>
-                        <li><a href="aboutus.php" class="item">About us</a></li>
-                        <li><a href="rooms.php" class="item">Rooms</a></li>
-                        <li><a href="gallery.php" class="item">Gallery</a></li>
-                        <li><a href="airportpickup.php" class="item">Airport pick up</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'index.php';}}else{echo 'index.php';}?>" class="item">Home</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'aboutus.php';}}else{echo 'aboutus.php';}?>" class="item">About us</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'rooms.php';}}else{echo 'rooms.php';}?>" class="item">Rooms</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'gallery.php';}}else{echo 'gallery.php';}?>" class="item">Gallery</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'airportpickup.php';}}else{echo 'airportpickup.php';}?>" class="item">Airport pick up</a></li>
                         <li><a href="#" class="item">Excursions</a></li>
-                        <li><a href="contactus.php" class="item">Contacy us</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'contactus.php';}}else{echo 'contactus.php';}?>" class="item">Contacy us</a></li>
                     </ul>
                 </div>
                 <div class="col-7 col-sm-5">
@@ -563,18 +754,7 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
-                    <?php
-                        if(isset($_SESSION['user_type'])){
-                            if($_SESSION['user_type']=="admin"){
-                                ?>
-                                <br>
-                                <div class="text-center">
-                                    <a href="admindashboard.php">Get admin panel</a>
-                                </div>
-                    <?php
-                            }
-                        }
-                    ?>
+                    
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -593,6 +773,7 @@
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
  
     <script>
       var wow = new WOW(
@@ -612,6 +793,37 @@
         );
         wow.init();
     </script> 
+
+<?php
+      echo '<script>';
+      
+
+         if(isset($_SESSION['del'])){
+            if($_SESSION['del']==1){ 
+            echo 'swal({
+              title: "Deleted!",
+              text: "Excursion deletion is success!",
+              icon: "success",
+              button: "Ok",
+            });';
+            
+            //session_destroy();
+            unset($_SESSION['del']);}
+            else{
+                echo 'swal({
+                    title: "Oops!",
+                    text: "Excursion is not delete!",
+                    icon: "error",
+                    button: "Ok",
+                  });';
+                  
+                  //session_destroy();
+                  unset($_SESSION['del']);}
+            }
+           
+         
+     echo '</script>';
+    ?>
  
     
 </body>

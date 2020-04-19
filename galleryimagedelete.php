@@ -9,6 +9,7 @@ foreach ($file_list as $file){
         if($i==$_GET['id']){
             unlink('images/'.$file);
             $_SESSION['del']=1;
+            
             header('Location:gallery.php');
             
 

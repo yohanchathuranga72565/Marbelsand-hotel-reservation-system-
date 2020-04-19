@@ -37,16 +37,33 @@
     <!-- booking show content start -->
     <div class="container">
         <div class="row">
-            <div class="card-body">
+            <div class="col-12">
              <!-- get php connection    -->
             <?php include 'connection.php';?>
             <!-- get php connection end -->
 
-            <?php 
-                $query="SELECT * FROM room_type";
+            <?php
+                $query0="SELECT type_id FROM room_type";
+                $query_run0=mysqli_query($connection,$query0);
+                $total_rows=mysqli_num_rows($query_run0);
+                $rows_per_page=6;
+
+                if(isset($_GET['p'])){
+                    $page_no=$_GET['p']; 
+                }
+                else{
+                    $page_no=1; 
+                }
+
+             
+                $start=($page_no-1) * $rows_per_page;
+
+            
+                $query="SELECT * FROM room_type LIMIT {$start},{$rows_per_page}";
                 $query_run=mysqli_query($connection,$query);
             ?>
-                <h3 class="text-center">Room Types Available in Hotel Marble Sand</h3>
+
+                <h3 class="text-center mb-5">Room Types Available in Hotel Marble Sand</h3>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
@@ -56,7 +73,7 @@
                         <th scope="col">Room_name</th>
                         <th scope="col">Max_Guests</th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
+                        
                         </tr>
                     </thead>
 
@@ -88,6 +105,39 @@
                     
             </div>
         </div>
+        <?php 
+        //first page
+        $first="<a href=\"adminroomshow.php?p=1\"><b>First</b></a>";
+
+        //last page
+        $last_page_no=ceil($total_rows/$rows_per_page);
+        $last="<a href=\"adminroomshow.php?p={$last_page_no}\"><b>Last</b></a>";
+
+        //next page
+        if($page_no>=$last_page_no){
+            $next="<a><b>Next</b></a>";
+        }
+        else{
+            $next_page_no=$page_no+1;
+            $next="<a href=\"adminroomshow.php?p={$next_page_no}\"><b>Next</b></a>";
+        }
+
+        //previous page
+        if($page_no<=1){
+            $prev="<a><b>Previous</b></a>";
+        }
+        else{
+            $prev_page_no=$page_no-1;
+            $prev="<a href=\"adminroomshow.php?p={$prev_page_no}\"><b>Previous</b></a>";
+        }
+    ?>
+        <div class="row mb-3">
+            <div class="col-12  text-center  text-dark"> 
+                <?php echo $first .' | '. $prev .' | <b>Page  '. $page_no . ' of ' .$last_page_no.'</b> | '. $next .' | '. $last ;?>
+            </div>
+        </div>
+
+
     </div>
     <!-- modal -->
     <div class="modal" id="editmodal" tabindex="-1" role="dialog">

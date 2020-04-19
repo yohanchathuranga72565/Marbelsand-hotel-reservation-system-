@@ -38,6 +38,7 @@ include 'connection.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css"/>
     <link href="simple-sidebar.css" rel="stylesheet">
+    
     <title>Show Booking</title>
 </head>
 <body>
@@ -48,17 +49,54 @@ include 'connection.php';
     <!-- booking show content start -->
     <div class="container">
         <div class="row">
-            <div class="card-body">
+            <div class="col-12">
              
 
             <?php
+                if(isset($_GET['user_type'])){
+                    $filter=$_GET['user_type'];
+                }
+                
+
                 if($filter!='all'){ 
+                    $query0="SELECT user_id FROM login WHERE user_type='{$filter}'";
+                    $query_run0=mysqli_query($connection,$query0);
+                    $total_rows=mysqli_num_rows($query_run0);
+                    $rows_per_page=6;
+
+                    if(isset($_GET['p'])){
+                        $page_no=$_GET['p']; 
+                    }
+                    else{
+                        $page_no=1; 
+                    }
+
+                
+                    $start=($page_no-1) * $rows_per_page;
+
+
                     $query="SELECT * FROM login WHERE user_type='{$filter}'";
                     $query_run=mysqli_query($connection,$query);
                     $name1='';
                     $pno1='';
                 }
                 else{
+                    $query0="SELECT user_id FROM login";
+                    $query_run0=mysqli_query($connection,$query0);
+                    $total_rows=mysqli_num_rows($query_run0);
+                    $rows_per_page=6;
+
+                    if(isset($_GET['p'])){
+                        $page_no=$_GET['p']; 
+                    }
+                    else{
+                        $page_no=1; 
+                    }
+
+                
+                    $start=($page_no-1) * $rows_per_page;
+
+
                     $query="SELECT * FROM login";
                     $query_run=mysqli_query($connection,$query);
                     $name1='';
@@ -138,7 +176,7 @@ include 'connection.php';
                             <td><?php echo $row['last_login']; ?></td>
                             
                             <!-- <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</button></td> -->
-                            <td><a href="#" type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
+                            <td><a href="adminuserdelete.php?email=<?php echo $row['email'];?>&type=<?php echo $row['user_type'];?>" type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
                             
                         </tr>
                     </tbody>
@@ -155,6 +193,38 @@ include 'connection.php';
 
                     
             </div>
+            <?php 
+        //first page
+        $first="<a href=\"adminuserdetails.php?p=1&user_type={$filter}\"><b>First</b></a>";
+
+        //last page
+        $last_page_no=ceil($total_rows/$rows_per_page);
+        $last="<a href=\"adminuserdetails.php?p={$last_page_no}&user_type={$filter}\"><b>Last</b></a>";
+
+        //next page
+        if($page_no>=$last_page_no){
+            $next="<a><b>Next</b></a>";
+        }
+        else{
+            $next_page_no=$page_no+1;
+            $next="<a href=\"adminuserdetails.php?p={$next_page_no}&user_type={$filter}\"><b>Next</b></a>";
+        }
+
+        //previous page
+        if($page_no<=1){
+            $prev="<a><b>Previous</b></a>";
+        }
+        else{
+            $prev_page_no=$page_no-1;
+            $prev="<a href=\"adminuserdetails.php?p={$prev_page_no}&user_type={$filter}\"><b>Previous</b></a>";
+        }
+    ?>
+        
+        <div class="col-12  text-center  text-dark"> 
+            <?php echo $first .' | '. $prev .' | <b>Page  '. $page_no . ' of ' .$last_page_no.'</b> | '. $next .' | '. $last ;?>
+        </div>
+
+
         </div>
     </div>
     <!-- edit booking modal start-->
@@ -448,6 +518,7 @@ include 'connection.php';
             <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+            
         <!-- Menu Toggle Script -->
 
  <!-- modal update start -->
@@ -564,5 +635,48 @@ include 'connection.php';
                 unset($_SESSION['emailsent']);  
             echo '</script>';
             ?>
+    <?php
+      echo '<script>';
+      
+
+         if(isset($_SESSION['del'])){
+            if($_SESSION['del']==1){ 
+            echo 'swal({
+              title: "Deleted!",
+              text: "Account deletion is success!",
+              icon: "success",
+              button: "Ok",
+            });';
+            
+            //session_destroy();
+            unset($_SESSION['del']);}
+            else{
+                echo 'swal({
+                    title: "Oops!",
+                    text: "Account is not delete!",
+                    icon: "error",
+                    button: "Ok",
+                  });';
+                  
+                  //session_destroy();
+                  unset($_SESSION['del']);}
+            }
+
+            if(isset($_SESSION['admin'])){
+                if($_SESSION['admin']==1){ 
+                echo 'swal({
+                  title: "Can\'t Deleted!",
+                  text: "This is a super admin acoount!",
+                  icon: "error",
+                  button: "Ok",
+                });';
+                
+                //session_destroy();
+                unset($_SESSION['admin']);}
+            }
+           
+         
+     echo '</script>';
+    ?>
 </body>
 </html>

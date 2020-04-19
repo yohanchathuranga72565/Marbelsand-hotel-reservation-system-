@@ -4,13 +4,23 @@ include 'connection.php';
 if(isset($_GET['order_id']) && isset($_SESSION['name'])){
     if(isset($_SESSION['email'])){
         $type="registered";
+
+        $query000="SELECT registered_customer_id FROM registered_customer WHERE email='{$_SESSION['email']}'";
+        $result_set000 = mysqli_query($connection,$query000);
+        $registered_customer_id=0;
+            foreach($result_set000 as $row000){
+                $registered_customer_id=$row000['registered_customer_id'];
+            }
+        $query="INSERT INTO customer (registered_customer_id,customer_type,name,email,contact_no,age,country) VALUES ('{$registered_customer_id}','{$type}','{$_SESSION['name']}','{$_SESSION['email2']}','{$_SESSION['pnumber']}','{$_SESSION['age']}','{$_SESSION['country']}')";
+        $result_set = mysqli_query($connection,$query);
     }
     else{
         $type="unregistered";
+        $query="INSERT INTO customer (customer_type,name,email,contact_no,age,country) VALUES ('{$type}','{$_SESSION['name']}','{$_SESSION['email2']}','{$_SESSION['pnumber']}','{$_SESSION['age']}','{$_SESSION['country']}')";
+        $result_set = mysqli_query($connection,$query);
     }
 
-    $query="INSERT INTO customer (customer_type,name,email,contact_no,age,country) VALUES ('{$type}','{$_SESSION['name']}','{$_SESSION['email2']}','{$_SESSION['pnumber']}','{$_SESSION['age']}','{$_SESSION['country']}')";
-    $result_set = mysqli_query($connection,$query);
+    
 
     $query1="SELECT * FROM vehicle_reservation WHERE pick_up_date='{$_SESSION['date']}'";
     $result_set1 = mysqli_query($connection,$query1);
@@ -470,18 +480,7 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
 
                     </div>
-                    <?php
-                        if(isset($_SESSION['user_type'])){
-                            if($_SESSION['user_type']=="admin"){
-                                ?>
-                                <br>
-                                <div class="text-center">
-                                    <a href="admindashboard.php">Get admin panel</a>
-                                </div>
-                    <?php
-                            }
-                        }
-                    ?>
+                    
                 </div>
            </div>
            <div class="row justify-content-center">             

@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <lable>Check_In_date</lable><br/>
                             <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input  class="form-control" id="check_in_date" name="checkin" type="text" value=<?php echo $_SESSION['checkin']; unset($_SESSION['checkin']);?> readonly /> 
+                                <input  class="form-control" id="check_in_date" name="checkin" type="text" value=<?php if(isset($_SESSION['checkin'])){echo $_SESSION['checkin'];}?> readonly> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <lable>Check_Out_Date</lable><br/>
                             <div id="datepicker1" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input class="form-control" id="check_out_date" name="checkout" type="text" value=<?php echo $_SESSION['checkout']; unset($_SESSION['checkout']);?> readonly />
+                                <input class="form-control" id="check_out_date" name="checkout" type="text" value=<?php echo $_SESSION['checkout'];?> readonly />
                                 <span class="input-group-addon"><i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
@@ -276,18 +276,7 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
-                    <?php
-                        if(isset($_SESSION['user_type'])){
-                            if($_SESSION['user_type']=="admin"){
-                                ?>
-                                <br>
-                                <div class="text-center">
-                                    <a href="admindashboard.php">Get admin panel</a>
-                                </div>
-                    <?php
-                            }
-                        }
-                    ?>
+                    
                 </div>
            </div>
            <div class="row justify-content-center">             

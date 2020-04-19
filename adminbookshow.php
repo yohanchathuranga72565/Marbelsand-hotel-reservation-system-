@@ -6,6 +6,9 @@ include 'connection.php';
         if($_SESSION['user_type']=="admin"){
             //load the page
         }
+        else if($_SESSION['user_type']=="receptionist"){
+            //load the page
+        }
         else{
             header('Location:index.php'); 
         }
@@ -41,12 +44,30 @@ include 'connection.php';
     <!-- booking show content start -->
     <div class="container">
         <div class="row">
-            <div class="card-body">
+            <div class="col-12">
              
 
             <?php 
-                $query="SELECT * FROM room_reservation";
+                $query0="SELECT reservation_id FROM room_reservation";
+                $query_run0=mysqli_query($connection,$query0);
+                $total_rows=mysqli_num_rows($query_run0);
+                $rows_per_page=6;
+
+                if(isset($_GET['p'])){
+                    $page_no=$_GET['p']; 
+                }
+                else{
+                    $page_no=1; 
+                }
+
+             
+                $start=($page_no-1) * $rows_per_page;
+
+                
+
+                $query="SELECT * FROM room_reservation LIMIT {$start},{$rows_per_page}";
                 $query_run=mysqli_query($connection,$query);
+            
             ?>
             <h2 class="text-center">About Rooms Bookings</h2>
             <div class="text-right">
@@ -101,6 +122,39 @@ include 'connection.php';
 
                     
             </div>
+        <?php 
+        //first page
+        $first="<a href=\"adminbookshow.php?p=1\"><b>First</b></a>";
+
+        //last page
+        $last_page_no=ceil($total_rows/$rows_per_page);
+        $last="<a href=\"adminbookshow.php?p={$last_page_no}\"><b>Last</b></a>";
+
+        //next page
+        if($page_no>=$last_page_no){
+            $next="<a><b>Next</b></a>";
+        }
+        else{
+            $next_page_no=$page_no+1;
+            $next="<a href=\"adminbookshow.php?p={$next_page_no}\"><b>Next</b></a>";
+        }
+
+        //previous page
+        if($page_no<=1){
+            $prev="<a><b>Previous</b></a>";
+        }
+        else{
+            $prev_page_no=$page_no-1;
+            $prev="<a href=\"adminbookshow.php?p={$prev_page_no}\"><b>Previous</b></a>";
+        }
+    ?>
+        
+        <div class="col-12  text-center  text-dark"> 
+            <?php echo $first .' | '. $prev .' | <b>Page  '. $page_no . ' of ' .$last_page_no.'</b> | '. $next .' | '. $last ;?>
+        </div>
+        
+
+
         </div>
     </div>
     <!-- edit booking modal start-->
@@ -200,6 +254,7 @@ include 'connection.php';
         </div>
         </div>
         </div>
+        
     
     <!-- edit room booking modal end-->
 

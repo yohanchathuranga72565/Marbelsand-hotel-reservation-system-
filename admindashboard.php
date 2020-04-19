@@ -43,12 +43,13 @@
     <!-- dashboard content -->
     <div class="container">
         <div class="row">
-            <div class="col-4">
-                <div class="card mt-4 bg-primary" style="width: 18rem;">
+            <div class="col-12 col-sm-4 col-md-4 ">
+                <div class="card mt-4 bg-primary img-responsive">
                     <div class="card-body">
                         <i class="fa fa-calendar-check-o text-left text-light fa-3x"></i>
                         <h5 class="card-title text-right text-light">Bookings</h5>
-                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                     </div>
                     <div class="card-footer bg-dark"><br>
                         <a href="adminbookshow.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
@@ -56,13 +57,14 @@
                     </div>            
                 </div>
             </div>
-
-            <div class="col-4">
-                <div class="card mt-4 bg-success" style="width: 18rem;">
+            <?php if($_SESSION['user_type']=="admin"){?>
+            <div class="col-12 col-sm-4 col-md-4">
+                <div class="card mt-4 bg-success img-responsive" >
                     <div class="card-body">
                         <i class="fa fa-bed text-left text-light fa-3x"></i>
                         <h5 class="card-title text-right text-light">Rooms</h5>
-                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                     </div>
                     <div class="card-footer bg-dark"><br>
                         <a href="adminroomshow.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
@@ -71,12 +73,13 @@
                 </div>
             </div>
 
-            <div class="col-4">
-                <div class="card mt-4 bg-info" style="width: 18rem;">
+            <div class="col-12 col-sm-4 col-md-4">
+                <div class="card mt-4 bg-info img-responsive">
                     <div class="card-body">
                         <i class="fa fa-file-image-o text-left text-light fa-3x"></i>
                         <h5 class="card-title text-right text-light">Gallery</h5>
-                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                        <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                     </div>
                     <div class="card-footer bg-dark">
                         <a href="gallery.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
@@ -84,46 +87,52 @@
                     </div>            
                 </div>
             </div>
+            
         </div>
+            
 
         <div class="row">
-            <div class="col-4">
-                <div class="card mt-4 bg-danger" style="width: 18rem;">
+        <?php }?>
+            <div class="col-12 col-sm-4 col-md-4">
+                <div class="card mt-4 bg-danger img-responsive">
                         <div class="card-body">
                    
                             <i class="fa fa-fighter-jet text-left text-light fa-3x"></i>
                             <h5 class="card-title text-right text-light">Airport Pick Up</h5>
-                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                         </div>
-                        <div class="card-footer bg-dark">
+                        <div class="card-footer bg-dark"><br>
                             <a href="adminairportshow.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
-                            <a href="#" class="text-light text-left">Add  <i class="fa fa-plus-circle"></i></a></br>
+                            <!-- <a href="#" class="text-light text-left">Add  <i class="fa fa-plus-circle"></i></a></br> -->
                         </div>            
                 </div>
             </div>
-
-            <div class="col-4">
-                <div class="card mt-4 bg-secondary" style="width: 18rem;">
+            <?php if($_SESSION['user_type']=="admin"){?>
+            <div class="col-12 col-sm-4 col-md-4">
+                <div class="card mt-4 bg-secondary img-responsive">
                         <div class="card-body">
         
                             <i class="fa fa-car text-left text-light fa-3x"></i>
                             <h5 class="card-title text-right text-light">Excursions</h5>
-                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                         </div>
                         <div class="card-footer bg-dark">
-                            <a href="#" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
-                            <a href="#" class="text-light text-left">Add  <i class="fa fa-plus-circle"></i></a></br>
+                            <a href="excursion.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
+                            <a href="adminexcursion.php" class="text-light text-left">Add  <i class="fa fa-plus-circle"></i></a></br>
                         </div>            
                 </div>
             </div>
 
-            <div class="col-4">
-                <div class="card mt-4 bg-success" style="width: 18rem;">
+            <div class="col-12 col-sm-4 col-md-4">
+                <div class="card mt-4 bg-success img-responsive">
                         <div class="card-body">
                    
                             <i class="fa fa-user text-left text-light fa-3x"></i>
                             <h5 class="card-title text-right text-light">User Details</h5>
-                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d") . "<br>".date("h:i a");?></p>
+                            <p class="card-text text-light text-right"><?php date_default_timezone_set("Asia/Colombo"); echo date("Y-m-d");?></p>
+                        <p class="card-text text-light text-right clock">00:00:00</p>
                         </div>
                         <div class="card-footer bg-dark">
                             <a href="adminuserdetails.php" class="text-light text-left">Show <i class="fa fa-chevron-right text-light"></i></a></br>
@@ -131,6 +140,7 @@
                         </div>            
                 </div>
             </div>
+            <?php }?>
 
 
         </div>
@@ -200,6 +210,29 @@
             }  
             echo '</script>';
             ?>
+        <script>
+            setInterval(updateClock,1000);
+             
+            function updateClock(){
+                var myDate=new Date();
+                var myHours=myDate.getHours();
+                var myMinutes=myDate.getMinutes();
+                var mySeconds=myDate.getSeconds();
+
+                if(myHours<10){myHours= "0" + myHours;}
+                if(myMinutes<10){myMinutes= "0" + myMinutes;}
+                if(mySeconds<10){mySeconds= "0" + mySeconds;}
+
+                var time= myHours + ":" + myMinutes + ":" + mySeconds;
+
+                var clock=document.getElementsByClassName("clock");
+                for(var i=0; i<clock.length;i++){
+                    clock[i].innerText=time;
+                }
+
+            }
+        
+        </script>
 
     </body>
 </html>

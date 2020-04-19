@@ -84,7 +84,7 @@
             if(substr($file, strlen($file)-3)=='jpg' || substr($file, strlen($file)-3)=='jpeg'){
                 if($start<=$i && $i<=$img_per_page*$page_no){
         ?>
-                <div class="col-md-4 float-left pb-4">
+                <div class="col-md-4  float-left pb-4">
                         <div class="card wow slideInUp">
                         <?php
                         
@@ -107,7 +107,11 @@
                             ?>
                             <div class="text-center">
                                 <a href="galleryimagedelete.php?id=<?php echo $i;?>" type="button"  class="btn btn-danger btn-sm" >Delete image</a>
+                                <!-- <a  class="btn btn-danger btn-sm" data-toggle="modal" data-target="">Delete1 image</a> -->
                             </div>
+                           
+
+
                             <?php
                                 }
                                 
@@ -122,6 +126,7 @@
                 }
 
             }
+            
             
         }
     
@@ -179,13 +184,13 @@
                 <div class="col-4 offset-1 col-sm-2">
                     <h5>Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="index.php" class="item">Home</a></li>
-                        <li><a href="aboutus.php" class="item">About us</a></li>
-                        <li><a href="rooms.php" class="item">Rooms</a></li>
+                    <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'index.php';}}else{echo 'index.php';}?>" class="item">Home</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'aboutus.php';}}else{echo 'aboutus.php';}?>" class="item">About us</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'rooms.php';}}else{echo 'rooms.php';}?>" class="item">Rooms</a></li>
                         <li><a href="#" class="item">Gallery</a></li>
-                        <li><a href="airportpickup.php" class="item">Airport pick up</a></li>
-                        <li><a href="excursion.php" class="item">Excursions</a></li>
-                        <li><a href="contactus.php" class="item">Contacy us</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'airportpickup.php';}}else{echo 'airportpickup.php';}?>" class="item">Airport pick up</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'excursion.php';}}else{echo 'excursion.php';}?>" class="item">Excursions</a></li>
+                        <li><a href="<?php if(isset($_SESSION['user_type'])){if($_SESSION['user_type']=='admin'|| $_SESSION['user_type']=='receptionist'){echo '#';}else{echo 'contactus.php';}}else{echo 'contactus.php';}?>" class="item">Contacy us</a></li>
                     </ul>
                 </div>
                 <div class="col-7 col-sm-5">
@@ -208,18 +213,7 @@
                         <a class="btn btn-social-icon btn-google" href="http://youtube.com/"><i class="fa fa-youtube fa-lg"></i></a>
                         <a class="btn btn-social-icon btn-google" href="mailto:"><i class="fa fa-envelope-o fa-lg"></i></a>
                     </div>
-                    <?php
-                        if(isset($_SESSION['user_type'])){
-                            if($_SESSION['user_type']=="admin"){
-                                ?>
-                                <br>
-                                <div class="text-center">
-                                    <a href="admindashboard.php">Get admin panel</a>
-                                </div>
-                    <?php
-                            }
-                        }
-                    ?>
+                    
                 </div>
            </div>
            <div class="row justify-content-center">             
@@ -288,5 +282,27 @@
          
      echo '</script>';
     ?>
+    <!-- <script>
+        function sweetalerclick(){
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover image!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                    // swal("Poof! Your imaginary file has been deleted!", {
+                    // icon: "success",
+                    // });
+    
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+                });
+            
+        }
+    </script> -->
 </body>
 </html>

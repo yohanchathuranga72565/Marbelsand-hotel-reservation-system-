@@ -23,7 +23,7 @@ if(isset($_SESSION['user_type'])){
   }
   else if($_SESSION['user_type']=="receptionist"){
       //load the page
-      $query="SELECT name FROM receptionist WHERE email='{$_SESSION['email']}'";
+      $query="SELECT * FROM receptionist WHERE email='{$_SESSION['email']}'";
       $result_set=mysqli_query($connection,$query);
       if(mysqli_num_rows($result_set)>0){
           foreach($result_set as $row){
@@ -51,21 +51,27 @@ if(isset($_SESSION['user_type'])){
       <div class="list-group list-group-flush mt-3">
         <a href="admindashboard.php" class="list-group-item list-group-item-action bg-danger text-warning"><b>Dashboard</b></a>
 
-        <a href="#" class="list-group-item list-group-item-action bg-dark text-light" data-toggle="collapse" data-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules">
+<a href="#" class="list-group-item list-group-item-action bg-dark text-light" <?php if($_SESSION['user_type']=="admin"){?> data-toggle="collapse" data-target="#collapseModules" aria-expanded="false" aria-controls="collapseModules"<?php }?>>
         <i class="fa fa-table"></i> Modules
         </a>
-        <div class="collapse" id="collapseModules">
-          <a href="adminbookshow.php" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-calendar-check-o"></i> Bookings</a>
-          <a href="adminroomshow.php" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-bed"></i> Rooms</a>
-          <a href="uploadimage.php" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-file-image-o"></i> Gallary</a>
-          <a href="adminairportshow.php" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-fighter-jet"></i> Airport Pick Up</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark text-light ml-4"><i class="fa fa-car"></i> Excursions</a>
+        <div <?php if($_SESSION['user_type']=="admin"){?>class="collapse" id="collapseModules" <?php }?>>
+          <a href="adminbookshow.php" class="list-group-item list-group-item-action bg-dark text-light pl-5"><i class="fa fa-calendar-check-o"></i> Bookings</a>
+          <?php if($_SESSION['user_type']=="admin"){?>
+            <a href="adminroomshow.php" class="list-group-item list-group-item-action bg-dark text-light pl-5"><i class="fa fa-bed"></i> Rooms</a>
+            <a href="uploadimage.php" class="list-group-item list-group-item-action bg-dark text-light pl-5"><i class="fa fa-file-image-o"></i> Gallary</a>
+          <?php }?>
+          <a href="adminairportshow.php" class="list-group-item list-group-item-action bg-dark text-light pl-5"><i class="fa fa-fighter-jet"></i> Airport Pick Up</a>
+          <?php if($_SESSION['user_type']=="admin"){?>
+            <a href="adminexcursion.php" class="list-group-item list-group-item-action bg-dark text-light pl-5"><i class="fa fa-car"></i> Excursions</a>
+          <?php }?>
 
 
         </div>
+        <?php if($_SESSION['user_type']=="admin"){?>
             <a href="adminuserdetails.php" class="list-group-item list-group-item-action bg-dark text-light"><i class="fa fa-user-circle"></i> User Login Details</a>
             
             <a href="#" class="list-group-item list-group-item-action bg-dark text-light" data-toggle="modal" data-target="#usermodal"><i class="fa fa-plus"></i> Create Account</a>
+            <?php }?>
       </div>
   </div>
     <!-- /#sidebar-wrapper -->
@@ -82,7 +88,7 @@ if(isset($_SESSION['user_type'])){
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="index.php">Home</a>
+              <a class="nav-link" href="changeview.php"><i class="fa fa-eye" aria-hidden="true"></i> User View</a>
             </li>
             
             <li class="nav-item dropdown">
