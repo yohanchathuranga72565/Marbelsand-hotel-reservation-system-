@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/yohanchathuranga72565/Marbelsand-hotel-reservation-system#readme",
   "dependencies": {
-    "bootstrap": "^4.0.0",
+    "bootstrap": "^4.3.1",
     "jquery": "^3.3.1",
     "popper.js": "^1.12.9"
   }
