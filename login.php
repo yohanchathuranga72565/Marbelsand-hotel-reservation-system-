@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <footer class="footer">
+    <footer class="footer  pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">

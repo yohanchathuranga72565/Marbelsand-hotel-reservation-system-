@@ -719,7 +719,7 @@
 
     <!--tours end-->
     <!-- footer start-->
-    <footer class="footer mt-5">
+    <footer class="footer mt-5  pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">

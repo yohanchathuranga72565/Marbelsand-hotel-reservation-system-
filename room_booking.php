@@ -131,15 +131,15 @@
                                     
                                     <div class="col-4">
                                     <lable><b>First Name:</b></lable><br/>
-                                    <input type='text'name="first_name" class="form-control input-box form-rounded" placeholder="first name" value=<?php echo $fname;?> required>
+                                    <input type='text'name="first_name" class="form-control input-box form-rounded" placeholder="first name" value=<?php echo $fname;?> required readonly>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>Last Name:</b></lable><br/>
-                                    <input type='text' name="last_name" class="form-control input-box form-rounded" placeholder="last name" value=<?php echo $lname;?> required>
+                                    <input type='text' name="last_name" class="form-control input-box form-rounded" placeholder="last name" value=<?php echo $lname;?> required readonly>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>Age:</b></lable><br/>
-                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" value=<?php echo $age;?> required>
+                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" value=<?php echo $age;?> required readonly>
                                     </div>
                                     </div>
                     </div>   
@@ -148,21 +148,21 @@
                 <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Email:</b></lable>
-                                    <input type='email' name='email' class="form-control input-box form-rounded" value=<?php echo $email;?> required>
+                                    <input type='email' name='email' class="form-control input-box form-rounded" value=<?php echo $email;?> required readonly>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Contact no:</b></lable>
-                                    <input type='text' name="phone" class="form-control input-box form-rounded" value=<?php echo $pnumber;?> required>
+                                    <input type='text' name="phone" class="form-control input-box form-rounded" value=<?php echo $pnumber;?> required readonly>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Country:</b></lable>
-                                    <input type='text' name="country" class="form-control input-box form-rounded" value=<?php echo $country;?> required>
+                                    <input type='text' name="country" class="form-control input-box form-rounded" value=<?php echo $country;?> required readonly>
                                 </div>
                             </div>
 
@@ -232,11 +232,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <lable><b>Amount:</b></lable>
-                                        <input type='text' name="amount" class="form-control input-box form-rounded" value=<?php echo $amount;?> required>
+                                        <input type='text' name="amount" class="form-control input-box form-rounded" value=<?php echo $amount;?> required readonly>
                                     </div>
                                     <div class="col-6">
                                         <lable><b>Currency:</b></lable>
-                                        <input type='text' name="currency" class="form-control input-box form-rounded" value="USD" required>
+                                        <input type='text' name="currency" class="form-control input-box form-rounded" value="USD" required readonly>
                                     </div>
                                 </div>
                             </div>
@@ -244,7 +244,7 @@
     
                         <div class="row">
                             <div class="col-12 text-center">
-                                <input type="submit" value="Pay Now" name="send_payment" class="btn btn-deep-orange">
+                                <input type="submit" value="Pay Now" name="send_payment" class="btn btn-default btn-sm">
                             </div>
                         </div>
             </div>

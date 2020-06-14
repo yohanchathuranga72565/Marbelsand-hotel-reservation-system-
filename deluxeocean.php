@@ -77,8 +77,11 @@ unset($_SESSION['check']);
     <link rel="stylesheet" type="text/css" href="contactus.css">
     <link rel="stylesheet" type="text/css" href="form.css">
     <link rel="stylesheet" type="text/css" href="map.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.theme.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" /> -->
 
     <title>Document</title>
 </head>
@@ -264,7 +267,7 @@ unset($_SESSION['check']);
     <!--about the room end-->
 
      <!-- footer start-->
-     <footer class="footer mt-5">
+     <footer class="footer mt-5  pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">
@@ -316,24 +319,69 @@ unset($_SESSION['check']);
     <script src="node_modules/jquery/dist/jquery.min.js"></script> 
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> -->
+    <script src="node_modules/jquery-ui/jquery-ui.min.js"></script>
     <script>
-         $(function () {
-            $("#datepicker").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-            }).datepicker('update', new Date());
-          });
+        //  $(function () {
+        //     $("#datepicker").datepicker({ 
+        //           autoclose: true, 
+        //           todayHighlight: true
+        //     }).datepicker('update', new Date());
+        //   });
 
-          $(function () {
-            $("#datepicker1").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
+        //   $(function () {
+        //     $("#datepicker1").datepicker({ 
+        //           autoclose: true, 
+        //           todayHighlight: true
                   
-            }).datepicker('update', new Date());
-          });
+        //     }).datepicker('update', new Date());
+        //   });
 
           // for validation
+
+        var selectdate=0;
+        var today = new Date();
+        var month=today.getMonth()+1;
+        var day=today.getDate();
+        if(month<10){
+          month="0"+month;
+        }
+        if(day<10){
+          day="0"+day;
+        }
+        var date = today.getFullYear()+'-'+month+'-'+day;
+         $(document).ready(function () {
+        
+          $("#check_in_date").attr("value",date);
+            $("#check_in_date").datepicker({ 
+              showAnim : 'drop',
+              numberOfMonth : 1,
+              minDate : new Date(),
+              dateFormat: 'yy-mm-dd',
+              onClose : function (selectedDate){
+                $("#check_out_date").datepicker("option","minDate",selectedDate);
+              }
+              // minDate : new Date(),
+              // showOtherMonths : true
+
+              
+            });
+            $("#check_out_date").attr("value",date);
+            $("#check_out_date").datepicker({ 
+              showAnim : 'drop',
+              numberOfMonth : 1,
+              minDate : new Date(),
+              dateFormat: 'yy-mm-dd',
+              onClose : function (selectedDate){
+                $("#check_in_date").datepicker("option","maxDate",selectedDate);
+              }
+              // minDate : new Date(),
+              // showOtherMonths : true
+
+              
+            });
+             
+          });
           
           
     </script>

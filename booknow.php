@@ -103,15 +103,15 @@
                                     
                                     <div class="col-4">
                                     <lable><b>First Name:</b></lable><br/>
-                                    <input type='text'name="fname" class="form-control input-box form-rounded" placeholder="first name" >
+                                    <input type='text' id="fname" name="fname" class="form-control input-box form-rounded" placeholder="first name" required>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>Last Name:</b></lable><br/>
-                                    <input type='text' name="lname" class="form-control input-box form-rounded" placeholder="last name">
+                                    <input type='text' id="lname" name="lname" class="form-control input-box form-rounded" placeholder="last name" required>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>Age:</b></lable><br/>
-                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" >
+                                    <input type='number' id="age" name="age" class="form-control input-box form-rounded" placeholder="Ex-18" required>
                                     </div>
                                     </div>
                                 </div>
@@ -120,21 +120,21 @@
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Email:</b></lable>
-                                    <input type='email' name='email' class="form-control input-box form-rounded" placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?>>
+                                    <input type='email' id="email" name='email' class="form-control input-box form-rounded" placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?> required>
                                 </div>
                             </div>
                     
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Contact no:</b></lable>
-                                    <input type='text' name="pnumber" class="form-control input-box form-rounded" placeholder="Ex-0094123456789" >
+                                    <input type='text' id="pnumber" name="pnumber" class="form-control input-box form-rounded" placeholder="Ex-0094123456789" required>
                                 </div>
                             </div>
 
                              <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Country:</b></lable>
-                                    <input type='text' name="country" class="form-control input-box form-rounded" placeholder="Ex-SriLanka">
+                                    <input type='text' id="country" name="country" class="form-control input-box form-rounded" placeholder="Ex-SriLanka" required>
                                 </div>
                             </div>
                              
@@ -199,7 +199,6 @@
                         
                         <lable><b> Adults:</b></lable>
                         <select class="form-control w-100 input-box form-rounded" name="adults">
-                            <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -212,7 +211,6 @@
                         
                         <lable><b> Children:</b></lable>
                         <select class="form-control w-100 input-box form-rounded" name="children">
-                            <option value="0">0</option>
                             <option value="1">1</option>
                             <option value="2">2</option>                           
                         </select>
@@ -222,7 +220,7 @@
 
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button type="submit" name="room" class="btn btn-deep-orange btn-sm">Confirm</button>
+                            <button type="submit" name="room" class="btn btn-default btn-sm">Confirm</button>
                         </div>
                     </div> 
 
@@ -241,7 +239,7 @@
     
 
      <!-- footer start-->
-     <footer class="footer mt-5">
+     <footer class="footer mt-5  pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">
@@ -293,6 +291,7 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script> 
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.2.0/dist/bootstrap-validate.js" ></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>  -->
 
     <!-- <script>
@@ -315,7 +314,11 @@
           
           
     </script> -->
-
+    <script>
+        bootstrapValidate(['#fname','#lname','#country'], 'alpha:You can only input alphabetic characters')
+        bootstrapValidate('#age', 'regex:^[1-9]+$:This is not a valid age')
+        bootstrapValidate('#email', 'email:Enter a valid email address')
+    </script>
     
 </body>
 </html>

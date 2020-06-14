@@ -236,6 +236,9 @@ include 'searchroom.php';
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-social.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.theme.min.css">
     <link rel="stylesheet" type="text/css" href="nav.css">
     <link rel="stylesheet" type="text/css" href="footer.css">
     <link rel="stylesheet" type="text/css" href="index.css">
@@ -243,7 +246,6 @@ include 'searchroom.php';
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
    
   
     
@@ -366,18 +368,18 @@ include 'searchroom.php';
               <div class='col-sm-4 offset-sm-2 col-12'>
                   
                         <label for="" style="color:white">Check-in</label>
-                        <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
-                          <input  class="form-control" name="checkin" type="text" readonly />
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        <div class="input-group date">
+                          <input  id="datepicker"  class="form-control" name="checkin" type="text" placeholder="check-in date" readonly />
+                          <div class="text-light pt-2 pl-2"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i></div>
                         </div> 
               </div>
 
               <div class='col-sm-4 col-12'>
                   
                       <label for="" style="color:white">Check-out</label>
-                      <div id="datepicker1" class="input-group date" data-date-format="yyyy-mm-dd">
-                          <input class="form-control" name="checkout" type="text" readonly />
-                          <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                      <div  class="input-group date">
+                          <input id="datepicker1" class="form-control" name="checkout" type="text" placeholder="check-out date" readonly /> 
+                          <div class="text-light pt-2 pl-2"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i></div>    
                         </div> 
               </div>  
           </div>
@@ -455,7 +457,7 @@ include 'searchroom.php';
               <div class="modal-body mx-3">
                 <div class="md-form mb-5">
                   <i class="fa fa-envelope prefix grey-text"></i>
-                  <input type="email"  name="uemail" class="form-control validate" required placeholder="Your email" >
+                  <input type="email" id="uemail"  name="uemail" class="form-control validate" placeholder="Your email" required>
                 
                 </div>
 
@@ -467,7 +469,7 @@ include 'searchroom.php';
 
               </div>
               <div class="modal-footer d-flex justify-content-center">
-                <button type="submit" name="login_user" class="btn btn-default">Login</button> 
+                <button type="submit" name="login_user" class="btn btn-sm btn-default">Login</button> 
               </div>
             </div>
           </div>
@@ -492,38 +494,38 @@ include 'searchroom.php';
             <div class="modal-body mx-3">
               <div class="md-form mb-5">
                 <i class="fa fa-user prefix grey-text"></i>
-                  <input type="text"  name="fname" class="form-control validate" placeholder="Your first name" required <?php echo 'value=' . $name ;?> >
+                  <input type="text" id="fname"  name="fname" class="form-control validate" placeholder="Your first name" required <?php echo 'value=' . $name ;?> >
               </div>
 
               <div class="md-form mb-5">
                 <i class="fa fa-user prefix grey-text"></i>
-                  <input type="text"  name="lname" class="form-control validate" placeholder="Your last name" required <?php echo 'value=' . $name ;?> >
+                  <input type="text" id="lname"  name="lname" class="form-control validate" placeholder="Your last name" required <?php echo 'value=' . $name ;?> >
               </div>
 
               <div class="md-form mb-5">
                 <i class="fa fa-envelope prefix grey-text"></i>
-                <input type="email" name="email" class="form-control validate"  placeholder="Your email" required <?php echo 'value=' . $email ;?> >
+                <input type="email" id="email" name="email" class="form-control validate"  placeholder="Your email" required <?php echo 'value=' . $email ;?> >
               </div>
 
               <div class="md-form mb-5">
                 <i class="fa fa-phone prefix grey-text"></i>
-                <input type="text" name="pno" class="form-control validate"  placeholder="Ex-: +94777123456" required <?php echo 'value=' . $pno ;?> >
+                <input type="text" id="pno" name="pno" class="form-control validate" pattern="^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{5})$"  placeholder="Ex-: +94777123456" required <?php echo 'value=' . $pno ;?> >
               </div>
 
               <div class="md-form mb-4">
                 <i class="fa fa-lock prefix grey-text"></i>
-                <input type="password" name="password_1"  class="form-control validate"  placeholder="Your password" required>
+                <input type="password" id="password_1" name="password_1"  class="form-control validate"  placeholder="Your password" required>
               </div>
 
               <div class="md-form mb-4">
                 <i class="fa fa-lock prefix grey-text"></i>
-                <input type="password" name="password_2" class="form-control validate"  placeholder="Confirm password" required>
+                <input type="password" id="password_2" name="password_2" class="form-control validate"  placeholder="Confirm password" required>
          
               </div>
 
             </div>
             <div class="modal-footer d-flex justify-content-center">
-              <button type="submit" name="reg_user" class="btn btn-deep-orange" onclick="validation();" >Sign Up</button>
+              <button type="submit" name="reg_user" class="btn btn-sm btn-default" onclick="validation();" >Sign Up</button>
             </div>
             
             
@@ -734,7 +736,7 @@ include 'searchroom.php';
 		
 
     <!-- footer start-->
-    <footer class="footer mt-5">
+    <footer class="footer mt-5 pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">
@@ -788,7 +790,8 @@ include 'searchroom.php';
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+    <script src="node_modules/jquery-ui/jquery-ui.min.js"></script>
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.2.0/dist/bootstrap-validate.js" ></script>
     
 
 
@@ -812,13 +815,9 @@ include 'searchroom.php';
           }
         );
         wow.init();
-
-       
         </script>
 
-        
-        
-
+  
      <?php
       echo '<script>';
       
@@ -861,6 +860,7 @@ include 'searchroom.php';
       
      echo '</script>';
     ?>
+    
 
 
     <?php
@@ -948,6 +948,7 @@ include 'searchroom.php';
 
      
     ?>
+  
 
     <script>
       $(document).ready(function(){
@@ -956,24 +957,61 @@ include 'searchroom.php';
     </script>
 
     <script>
-         $(function () {
+    var selectdate=0;
+        var today = new Date();
+        var month=today.getMonth()+1;
+        var day=today.getDate();
+        if(month<10){
+          month="0"+month;
+        }
+        if(day<10){
+          day="0"+day;
+        }
+        var date = today.getFullYear()+'-'+month+'-'+day;
+         $(document).ready(function () {
+        
+          $("#datepicker").attr("value",date);
             $("#datepicker").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-            }).datepicker('update', new Date());
-          });
+              showAnim : 'drop',
+              numberOfMonth : 1,
+              minDate : new Date(),
+              dateFormat: 'yy-mm-dd',
+              onClose : function (selectedDate){
+                $("#datepicker1").datepicker("option","minDate",selectedDate);
+              }
+              // minDate : new Date(),
+              // showOtherMonths : true
 
-          $(function () {
+              
+            });
+            $("#datepicker1").attr("value",date);
             $("#datepicker1").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-                  
-            }).datepicker('update', new Date());
+              showAnim : 'drop',
+              numberOfMonth : 1,
+              minDate : new Date(),
+              dateFormat: 'yy-mm-dd',
+              onClose : function (selectedDate){
+                $("#datepicker").datepicker("option","maxDate",selectedDate);
+              }
+              // minDate : new Date(),
+              // showOtherMonths : true
+
+              
+            });
+             
           });
 
           // for validation
           
           
+    </script>
+    <script>
+      bootstrapValidate('#uemail', 'email:Enter a valid email address')
+      bootstrapValidate(['#fname','#lname'], 'alpha:You can only input alphabetic characters')
+      bootstrapValidate('#email', 'email:Enter a valid email address')
+      // bootstrapValidate('#pno', 'regex:^[0-9]{2})?[-. ]?([0-9]?[0-9]{4})[-. ]?([0-9]{5})$:Please fulfill my regex')
+      bootstrapValidate('#password_1', 'min:5:Enter at least 5 characters!')
+      bootstrapValidate('#password_2', 'min:5:Enter at least 5 characters!')
     </script>
   
     

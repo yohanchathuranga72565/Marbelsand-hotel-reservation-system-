@@ -161,8 +161,12 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
     <link rel="stylesheet" type="text/css" href="airportpickup.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.10.1/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="node_modules/jquery-ui/jquery-ui.theme.min.css">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css"/> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-sweetalert/1.0.1/sweetalert.min.css">
+
 
 
     <title>Document</title>
@@ -373,7 +377,7 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                                 <div class="col-12 col-md-6 form-group">
                                     <lable><b>Pick up time:</b></lable>
                                     
-                                    <input type='time' class="form-control input-box form-rounded" name="time" placeholder="Flight Number">
+                                    <input type='text' class="form-control input-box form-rounded" id="time" name="time" placeholder="Time">
                                       
                                 </div>
                             </div>
@@ -444,7 +448,7 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
 
 
      <!-- footer start-->
-     <footer class="footer">
+     <footer class="footer pt-5">
         <div class="container">
             <div class="row">             
                 <div class="col-4 offset-1 col-sm-2">
@@ -498,8 +502,11 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/jquery-ui/jquery-ui.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
  
     <script>
       var wow = new WOW(
@@ -521,12 +528,12 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
     </script>
 
 <script>
-      $(function () {
-            $("#datepicker").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-            }).datepicker('update', new Date());
-          });      
+    //   $(function () {
+    //         $("#datepicker").datepicker({ 
+    //               autoclose: true, 
+    //               todayHighlight: true
+    //         }).datepicker('update', new Date());
+    //       });      
     </script>
 <?php
 echo '<script>';
@@ -547,5 +554,33 @@ if(isset($_SESSION['emailsent'])){
         unset($_SESSION['emailsent']);  
      echo '</script>';
     ?>
+
+        <script>
+        var selectdate=0;
+        var today = new Date();
+        var month=today.getMonth()+1;
+        var day=today.getDate();
+        if(month<10){
+          month="0"+month;
+        }
+        if(day<10){
+          day="0"+day;
+        }
+        var date = today.getFullYear()+'-'+month+'-'+day;
+
+            $(document).ready(function(){
+                $("#check_in_date").attr("value",date);
+                $("#check_in_date").datepicker({ 
+              showAnim : 'drop',
+              numberOfMonth : 1,
+              minDate : new Date(),
+              dateFormat: 'yy-mm-dd'
+              // minDate : new Date(),
+              // showOtherMonths : true 
+            });
+
+            });
+        </script>
+        
 </body>
 </html>
