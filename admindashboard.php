@@ -168,7 +168,7 @@
     });
   </script>
 
-<?php
+    <?php
         echo '<script>';
         if((isset($_SESSION['exist']))){
                     if($_SESSION['exist']==1){ 
@@ -209,7 +209,41 @@
                 unset($_SESSION['profileupdated']);}
             }  
             echo '</script>';
+            
+            echo '<script>';
+            if((isset($_SESSION['accflag']))){
+                        if($_SESSION['accflag']==1){ 
+                        echo 'swal({
+                        title: "Success!",
+                        text: "Account creation is successfully!",
+                        icon: "success",
+                        button: "Ok",
+                        });';
+                        
+                        //session_destroy();
+                        unset($_SESSION['accflag']);}
+
+                        else{
+                            echo 'swal({
+                                title: "Error!",
+                                text: "Account is not created.Please check!",
+                                icon: "error",
+                                button: "Ok",
+                                });';
+                                unset($_SESSION['accflag']);
+                        }
+                    }
+
+                  echo '</script>';
+
+
+
+
+
             ?>
+
+
+
         <script>
             setInterval(updateClock,1000);
              
@@ -233,6 +267,8 @@
             }
         
         </script>
+
+
 
     </body>
 </html>
