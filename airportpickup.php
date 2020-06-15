@@ -377,7 +377,7 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                                 <div class="col-12 col-md-6 form-group">
                                     <lable><b>Pick up time:</b></lable>
                                     
-                                    <input type='text' class="form-control input-box form-rounded" id="time" name="time" placeholder="Time">
+                                    <input type='time' class="form-control input-box form-rounded" id="time" name="time" placeholder="Time" required/>
                                       
                                 </div>
                             </div>
@@ -385,14 +385,14 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Flight number:</b></lable>
-                                    <input type='text' class="form-control input-box form-rounded" name="fno" placeholder="Flight Number">
+                                    <input type='text' id="fno" name="fno" class="form-control input-box form-rounded" placeholder="Flight Number" required>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Email:</b></lable>
-                                        <input type='email' name='email' class="form-control input-box form-rounded"  placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?>>
+                                        <input type='email' id="email" name='email' class="form-control input-box form-rounded"  placeholder="Email" <?php if(isset($_SESSION['email'])){?> readonly value =<?php echo $_SESSION['email']; }?> reqiured>
                                 </div>
                             </div>
                     
@@ -405,15 +405,15 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                                     
                                     <div class="col-4">
                                     <lable><b>First Name:</b></lable><br/>
-                                    <input type='text'name="fname" class="form-control input-box form-rounded" placeholder="first name" required>
+                                    <input type='text' id="fname" name="fname" class="form-control input-box form-rounded" placeholder="first name" required>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>First Name:</b></lable><br/>
-                                    <input type='text' name="lname" class="form-control input-box form-rounded" placeholder="last name" required>
+                                    <input type='text' id="lname" name="lname" class="form-control input-box form-rounded" placeholder="last name" required>
                                     </div>
                                     <div class="col-4">
                                     <lable><b>Age:</b></lable><br/>
-                                    <input type='number' name="age" class="form-control input-box form-rounded" placeholder="Ex-18" required>
+                                    <input type='number' id="age" name="age" class="form-control input-box form-rounded" placeholder="Ex-18" required>
                                     </div>
                                     </div>
                                 </div>
@@ -429,13 +429,13 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <lable><b>Country:</b></lable>
-                                    <input type='text' name="country" class="form-control input-box form-rounded" placeholder="Ex-SriLanka" required>
+                                    <input type='text' id="country" name="country" class="form-control input-box form-rounded" placeholder="Ex-SriLanka" required>
                                 </div>
                             </div>
                             
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button type="submit" name="airport" class="btn btn-deep-orange">Reserve Vehicle</button>
+                            <button type="submit" name="airport" class="btn btn-default btn-sm">Reserve Vehicle</button>
                         </div>
                     </div>
                     </div>
@@ -504,8 +504,12 @@ if(isset($_GET['order_id']) && isset($_SESSION['name'])){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/jquery-ui/jquery-ui.min.js"></script>
+
+
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script> -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.2.0/dist/bootstrap-validate.js" ></script>
+
 
  
     <script>
@@ -581,6 +585,15 @@ if(isset($_SESSION['emailsent'])){
 
             });
         </script>
+
+        <script>
+            // bootstrapValidate('#fno', 'regex:^(([A-Z]{2})|([A-Z][0-9])|([0-9][A-Z]))[1-9]([0-9]{1,3})?$:Please fulfill my regex')
+            bootstrapValidate('#email', 'email:Enter a valid email address')
+            bootstrapValidate(['#fname','#lname','#country'], 'alpha:You can only input alphabetic characters')
+            bootstrapValidate('#age', 'regex:^[1-9]+$:This is not a valid age')
+        </script>
+
+        
         
 </body>
 </html>

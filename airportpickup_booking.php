@@ -148,7 +148,7 @@
 
                         <div class="row">
                         <div class="col-12 text-center">
-                        <input type="submit" value="Pay Now" name="send_payment" class="btn btn-deep-orange">
+                        <input type="submit" value="Pay Now" name="send_payment" class="btn btn-default btn-sm">
                         </div>
                     </div>
             </div>
