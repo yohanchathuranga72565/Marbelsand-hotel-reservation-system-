@@ -13,14 +13,14 @@
     $user_id=0;
     if(isset($_POST['create'])){
         $errors=array();
-        $fname=$_POST['fname'];
-        $lname=$_POST['lname'];
-        $email=$_POST['email'];
-        $pnum=$_POST['pnumber'];
-        $acc_type=$_POST['accounttype'];
+        $fname=trim($_POST['fname']);
+        $lname=trim($_POST['lname']);
+        $email=trim($_POST['email']);
+        $pnum=trim($_POST['pnumber']);
+        $acc_type=trim($_POST['accounttype']);
         $name=$fname.' '.$lname;
-        $password1=$_POST['password1'];
-        $password2=$_POST['password2'];
+        $password1=trim($_POST['password1']);
+        $password2=trim($_POST['password2']);
 
         $query3="SELECT email FROM login WHERE email='{$email}'";
         $result_set3=mysqli_query($connection,$query3);
@@ -74,7 +74,7 @@
                 //sending verification email
                 $to=$email;
                 $subject="Email Verification";
-                $message="<a href='http://localhost/hotel reservation system/index.php?vkey=$vkey'>Register Account</a>";
+                $message="Welcome to the Hotel Marble Sand...please verify your account by clicking this link.<br><a href='http://localhost/hotel reservation system/index.php?vkey=$vkey'>Register Account</a>";
                 $headers="From : marblesandsl@gmail.com \r\n";
                 $headers.="MIME-Version: 1.0" . "\r\n";
                 $headers.="Content-type:text/html;charset=UTF-8" . "\r\n";

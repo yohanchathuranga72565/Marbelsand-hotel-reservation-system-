@@ -34,6 +34,8 @@ if(isset($_SESSION['user_type'])){
           }
       }
   }
+
+  
 }
 ?>
   <div class="d-flex"  id="wrapper">
@@ -67,6 +69,7 @@ if(isset($_SESSION['user_type'])){
 
 
         </div>
+        <a href="admincheckroom.php" class="list-group-item list-group-item-action bg-dark text-light"><i class="fa fa-search"></i> Check Room Availability</a>
         <?php if($_SESSION['user_type']=="admin"){?>
             <a href="adminuserdetails.php" class="list-group-item list-group-item-action bg-dark text-light"><i class="fa fa-user-circle"></i> User Login Details</a>
             
@@ -98,6 +101,7 @@ if(isset($_SESSION['user_type'])){
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editprofile"><i class="fa fa-user-circle"></i> Edit Profile</a>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#changepassword"><i class="fa fa-key" aria-hidden="true"></i> Change Password</a>
                 <a class="dropdown-item" href="logout.php"><i class="fa fa-power-off"></i> Logout</a>
                 <!-- <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a> -->
@@ -186,12 +190,12 @@ if(isset($_SESSION['user_type'])){
       </div>
       <!-- add new admin or reciptionist end -->
 
-      <!-- edit profile modal start-->
+    <!-- edit profile modal start-->
     <div class="modal" id="editprofile" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Room Reservation</h5>
+                <h5 class="modal-title">Edit Account</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -238,6 +242,68 @@ if(isset($_SESSION['user_type'])){
         </div>
     
     <!-- edit profile modal end-->
+
+
+    <!-- password change start-->
+    <div class="modal" id="changepassword" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="changepassword.php" method="POST">
+            <div class="modal-body">
+                <div class="row text-center">
+                  <div class="col-12 form-group">
+                      <lable><b>Old Password:</b></lable>
+                      <input type='password' name='oldpass' class="form-control input-box form-rounded" required>
+                  </div>
+                </div>
+                <div class="row text-center">
+                  <div class="col-12 form-group">
+                      <lable><b>New Password:</b></lable>
+                      <input type='Password' name='newpassword' class="form-control input-box form-rounded" required>
+                  </div>
+                </div>
+                <div class="row text-center">
+                  <div class="col-12 form-group">
+                      <lable><b>Confirm Password:</b></lable>
+                      <input type='Password' name='compassword' class="form-control input-box form-rounded" required>
+                  </div>
+                </div>
+
+                
+
+                <!-- <div class="row">
+                  <div class="col-12 form-group">
+                    <lable><b>Contact No:</b></lable>
+                    <input type='text' name='pno' class="form-control input-box form-rounded" value=<?php echo $pno;?> required>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <lable><b>Email:</b></lable>
+                    <input type='email' name='email' class="form-control input-box form-rounded" value=<?php echo $_SESSION['email'];?> required readonly>
+                  </div>
+                </div> -->
+
+
+            </div>
+            <div class="modal-footer">
+                
+                <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success btn-sm" name="changepassword">Save changes</button>
+            </div>
+            </form>
+        </div>
+        </div>
+        </div>
+    
+    <!-- password change end-->
 
       
   

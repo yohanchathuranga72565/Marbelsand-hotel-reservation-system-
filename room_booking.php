@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include 'connection.php';
 
         $fname="";
         $lname="";
@@ -14,6 +15,7 @@
         $adults=0;
         $children=0;
         $amount="";
+        $type_id=0;
 
         
         if(isset($_POST['room'])){
@@ -46,25 +48,41 @@
             
 
             if($roomtype=="Deluxe city facing room"){
+                $type_id=1;
                 $amount=135;
                 $_SESSION['typeid']=1;
             }
             elseif($roomtype=="Deluxe ocean facing room"){
+                $type_id=2;
                 $amount=126;
                 $_SESSION['typeid']=2;
             }
             elseif($roomtype=="Luxury city view room"){
+                $type_id=3;
                 $amount=117;
                 $_SESSION['typeid']=3;
             }
             elseif($roomtype=="Luxury ocean view room"){
+                $type_id=4;
                 $amount=108;
                 $_SESSION['typeid']=4;
             }
             elseif($roomtype=="Executive suite"){
+                $type_id=5;
                 $amount=90;
                 $_SESSION['typeid']=5;
             }
+
+            $query="SELECT * FROM room_type WHERE type_id='{$_SESSION['typeid']}' LIMIT 1";
+            $result_set = mysqli_query($connection,$query);
+
+            foreach($result_set as $row){
+                $amount=$row['room_price'];
+              }
+            
+              if(isset($_SESSION['email'])){
+                  $amount=intval($amount)*(95/100);
+              }
             
             $_SESSION['amount']=$amount;
 

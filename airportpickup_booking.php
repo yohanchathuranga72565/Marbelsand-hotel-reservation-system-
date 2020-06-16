@@ -44,6 +44,10 @@
             elseif($vtype=="Van"){
                 $amount=90;
             }
+
+            if(isset($_SESSION['email'])){
+                $amount=intval($amount)*(95/100);
+            }
             
             $_SESSION['amount']=$amount;
 

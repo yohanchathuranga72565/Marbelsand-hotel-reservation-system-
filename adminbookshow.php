@@ -71,6 +71,7 @@ include 'connection.php';
             ?>
             <h2 class="text-center">About Rooms Bookings</h2>
             <div class="text-right">
+                <a href="admincheckroom.php" type="button" class="btn btn-success btn-sm">Check room availability</a>
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addmodal">Add new booking</button>
             </div>
                 <table class="table">

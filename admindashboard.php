@@ -239,6 +239,48 @@
 
 
 
+                  echo '<script>';
+                  if((isset($_SESSION['compass']))){
+                              if($_SESSION['compass']==1){ 
+                              echo 'swal({
+                              title: "Success!",
+                              text: "Your password is changed successfully!",
+                              icon: "success",
+                              button: "Ok",
+                              });';
+                              
+                              //session_destroy();
+                              unset($_SESSION['compass']);}
+                              else if($_SESSION['compass']==0){ 
+                                echo 'swal({
+                                title: "Error!",
+                                text: "Confirm password did not match!",
+                                icon: "error",
+                                button: "Ok",
+                                });';
+                                
+                                //session_destroy();
+                                unset($_SESSION['compass']);}
+                          }
+          
+                  else if((isset($_SESSION['corrold']))){
+                            if($_SESSION['corrold']==1){ 
+                            echo 'swal({
+                            title: "Error!",
+                            text: "please enter correct old password!",
+                            icon: "error",
+                            button: "Ok",
+                            });';
+                            
+                            //session_destroy();
+                            unset($_SESSION['corrold']);}
+                        }  
+          
+                      echo '</script>';
+
+
+
+
 
             ?>
 

@@ -94,7 +94,7 @@ if(isset($_POST['reg_user'])){
         //sending verification email
         $to=$email;
         $subject="Email Verification";
-        $message="<a href='http://localhost/hotel reservation system/index.php?vkey=$vkey'>Register Account</a>";
+        $message="Welcome to the Hotel Marble Sand...please verify your account by clicking this link.<br><a href='http://localhost/hotel reservation system/index.php?vkey=$vkey'>Register Account</a>";
         $headers="From : marblesandsl@gmail.com \r\n";
         $headers.="MIME-Version: 1.0" . "\r\n";
         $headers.="Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -361,8 +361,7 @@ include 'searchroom.php';
 
     <!-- checked in out form start-->
 
-    <div class="container-fluid
-     cap">
+    <div class="container-fluid cap">
       <form action="index.php" method="POST">
           <div class="row p-1">
               <div class='col-sm-4 offset-sm-2 col-12'>
