@@ -2,6 +2,33 @@
 
  include 'checkin.php';
 
+ $room1=0.0;
+      $room2=0.0;
+      $room3=0.0;
+      $room4=0.0;
+      $room5=0.0;
+      $queryroom = "SELECT * FROM room_type";
+      $resultsetroom = mysqli_query($connection,$queryroom);
+
+      foreach($resultsetroom as $row){
+        if($row['type_id']== 1){
+          $room1 = $row['room_price'];
+        }
+        else if($row['type_id']== 2){
+          $room2 = $row['room_price'];
+        }
+        else if($row['type_id']== 3){
+          $room3 = $row['room_price'];
+        }
+        else if($row['type_id']== 4){
+          $room4 = $row['room_price'];
+        }
+        else{
+          $room5 = $row['room_price'];
+        }
+
+      }
+
  if(isset($_SESSION['check'])){
  echo '<div class="modal fade" id="roomtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -24,10 +51,10 @@
                          echo '<p class="card-text"><b>Deluxe City Facing room</b><br/>';
                          echo 'Max: 3 Person(s)<br/>';
                          echo 'Max: 2 Child(s)<br/>' ;
-                         echo 'Get 10% discount by booking before 21st April 2020</br>';
+                        
                          echo 'you have ' . $freerooms . ' free rooms </br>';
-                         echo '<span class="badge badge-pill badge-secondary">$135</span>';
-                         echo '<span class="badge badge-pill badge-secondary"><del>$150</del></span>'; 
+                        
+                         echo '<span class="badge badge-pill badge-secondary">$'.$room1.'</span>'; 
                          echo '</p>';
                      echo '</div>';
                      echo '<div class="card-footer d-flex justify-content-center">';
@@ -50,11 +77,10 @@
                 <div class="card-body">
                 <p class="card-text"><b>Deluxe Ocean Facing room</b><br/>
                   Max: 3 Person(s)<br/>
-                  Max: 2 Child(s)<br/>
-                  Get 10% discount by booking before 21st April 2020</br>';
+                  Max: 2 Child(s)<br/>';
                   echo 'you have ' . $freerooms . ' free rooms </br>';
-              echo '<span class="badge badge-pill badge-secondary">$126</span>
-              <span class="badge badge-pill badge-secondary"><del>$140</del></span>
+              echo '
+              <span class="badge badge-pill badge-secondary">$'.$room2.'</span>
                 </p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
@@ -76,11 +102,10 @@
             <div class="card-body">
               <p class="card-text"><b>Luxury City View room</b><br/>
               Max: 3 Person(s)<br/>
-              Max: 2 Child(s) <br/>
-              Get 10% discount by booking before 21st April 2020</br>';
+              Max: 2 Child(s) <br/>';
               echo 'you have ' . $freerooms . ' free rooms </br>';
-              echo '<span class="badge badge-pill badge-secondary">$117</span>
-              <span class="badge badge-pill badge-secondary"><del>$130</del></span> 
+              echo '
+              <span class="badge badge-pill badge-secondary">$'.$room3.'</span> 
             </p>
             </div>
             <div class="card-footer d-flex justify-content-center">
@@ -104,11 +129,10 @@
             <div class="card-body">
               <p class="card-text"><b>Luxury Ocean View room</b><br/>
               Max: 3 Person(s)<br/>
-              Max: 2 Child(s) <br/>
-              Get 10% discount by booking before 21st April 2020</br>';
+              Max: 2 Child(s) <br/>';
               echo 'you have ' . $freerooms . ' free rooms </br>';
-            echo '<span class="badge badge-pill badge-secondary">$108</span>
-            <span class="badge badge-pill badge-secondary"><del>$120</del></span> 
+            echo '
+            <span class="badge badge-pill badge-secondary">$'.$room4.'</span> 
             </p>
             </div>
 
@@ -133,11 +157,10 @@
               <div class="card-body">
               <p class="card-text"><b>Executive Suite</b><br/>
                 Max: 3 Person(s)<br/>
-                Max: 2 Child(s) <br/>
-                Get 10% discount by booking before 21st April 2020</br>';
+                Max: 2 Child(s) <br/>';
                 echo 'you have ' . $freerooms . ' free Suites  </br>';
-              echo '<span class="badge badge-pill badge-secondary">$90</span>
-              <span class="badge badge-pill badge-secondary"><del>$100</del></span> 
+              echo '
+              <span class="badge badge-pill badge-secondary">$'.$room5.'</span> 
               </p>
               </div>
 

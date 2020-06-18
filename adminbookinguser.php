@@ -1,5 +1,7 @@
 <?php session_start();
-    include 'connection.php';
+
+include 'connection.php';
+
     if(isset($_SESSION['user_type'])){
         if($_SESSION['user_type']=="admin"){
             //load the page
@@ -15,10 +17,10 @@
         header('Location:index.php');
     }
     if(isset($_GET['order_id']) && isset($_SESSION['name'])){
-        include 'admin_airport_data_insert.php';
+        include 'admin_room_data_insert.php';
     }
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,9 +45,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-             <!-- get php connection-->
-            <?php include 'connection.php';?>
-            <!-- get php connection end-->
+             
 
             <?php 
                 $filter=0;
@@ -53,7 +53,7 @@
                     $filter=$_POST['filter'];
                     echo $filter;
 
-                    $query0="SELECT vehicle_reservation_id FROM vehicle_reservation WHERE vehicle_reservation_id='{$filter}'";
+                    $query0="SELECT customer_id FROM customer WHERE customer_id='{$filter}'";
                     $query_run0=mysqli_query($connection,$query0);
                     $total_rows=mysqli_num_rows($query_run0);
                     $rows_per_page=6;
@@ -68,12 +68,13 @@
                 
                     $start=($page_no-1) * $rows_per_page;
 
+                    
 
-                    $query="SELECT * FROM vehicle_reservation WHERE vehicle_reservation_id='{$filter}' LIMIT {$start},{$rows_per_page}";
+                    $query="SELECT * FROM customer WHERE customer_id='{$filter}' LIMIT {$start},{$rows_per_page}";
                     $query_run=mysqli_query($connection,$query);
                 }
                 else{
-                    $query0="SELECT vehicle_reservation_id FROM vehicle_reservation";
+                    $query0="SELECT customer_id FROM customer";
                     $query_run0=mysqli_query($connection,$query0);
                     $total_rows=mysqli_num_rows($query_run0);
                     $rows_per_page=6;
@@ -88,32 +89,37 @@
                 
                     $start=($page_no-1) * $rows_per_page;
 
+                    
 
-                    $query="SELECT * FROM vehicle_reservation LIMIT {$start},{$rows_per_page}";
+                    $query="SELECT * FROM customer LIMIT {$start},{$rows_per_page}";
                     $query_run=mysqli_query($connection,$query);
 
                 }
                 
-                
+            
             ?>
-            <h2 class="text-center">About Vehicle Reservation</h2>
+            <h2 class="text-center">About Customer Details</h2>
             <div class="text-right">
-                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addmodal">Add new vehecle reservation</button>
+                <!-- <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addmodal">Add new booking</button>
+                <a href="admincheckroom.php" type="button" class="btn btn-success btn-sm">Check room availability</a> -->
                 <a href="adminpayment.php" type="button" class="btn btn-success btn-sm">Payment Details</a>
                 <a href="adminbookinguser.php" type="button" class="btn btn-success btn-sm">User Details</a>
+                <a href="adminbookshow.php" type="button" class="btn btn-success btn-sm">Back to room Booking</a>
+                <a href="adminairportshow.php" type="button" class="btn btn-success btn-sm">Back to airport pickup</a>
             </div>
                 <table class="table">
                     <thead class="thead-dark">
                         <tr>
-                        <th scope="col">Vehicle_Reservation_Id</th>
-                        <th scope="col">Vehicle_Id</th>
                         <th scope="col">Customer_Id</th>
-                        <th scope="col">Filight_No</th>
-                        <th scope="col">Payment_Id</th>
-                        <th scope="col">Pick_Up_date</th>
-                        <th scope="col">Pick_Up_Time</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
+                        <th scope="col">Customer_Type</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Contact_No</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Country</th>
+                        <!-- <th scope="col"></th> -->
+                        <!-- <th scope="col"></th>
+                        <th scope="col"></th> -->
                         </tr>
                     </thead>
 
@@ -122,17 +128,19 @@
                         if($query_run){
                             foreach($query_run as $row){
                         ?>
-                    <tbody action="adminbookshow.php" method="POST">
+                    <tbody action="adminbookinguser.php" method="POST">
                         <tr>
-                            <td><?php echo $row['vehicle_reservation_id']; ?></td>
-                            <td><?php echo $row['vehicle_id']; ?></td>
                             <td><?php echo $row['customer_id']; ?></td>
-                            <td><?php echo $row['flight_no']; ?></td>
-                            <td><?php echo $row['payment_id']; ?></td>
-                            <td><?php echo $row['pick_up_date']; ?></td>
-                            <td><?php echo $row['pick_up_time']; ?></td>
-                            <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</button></td>
-                            <td><a href=adminairportdelete.php?id=<?php echo $row['vehicle_reservation_id'];?> type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
+                            <td><?php echo $row['customer_type']; ?></td>
+                            <td><?php echo $row['name']; ?></td>
+                            <td><?php echo $row['email']; ?></td>
+                            <td><?php echo $row['contact_no']; ?></td>
+                            <td><?php echo $row['age']; ?></td>
+                            <td><?php echo $row['country']; ?></td>
+                        
+                            <!-- <td><a href="#"  class="morebtn" >More</a></td> -->
+                            <!-- <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</a></td>
+                            <td><a href="adminbookdelete.php?id=<?php echo $row['reservation_id'];?>&pid=<?php echo $row['payment_id'];?>&cid=<?php echo $row['customer_id'];?>" type="button"  class="btn btn-danger btn-sm" >Delete</a></td> -->
                             
                         </tr>
                     </tbody>
@@ -147,13 +155,13 @@
 
                     
             </div>
-            <?php 
+        <?php 
         //first page
-        $first="<a href=\"adminairportshow.php?p=1\"><b>First</b></a>";
+        $first="<a href=\"adminbookinguser.php?p=1\"><b>First</b></a>";
 
         //last page
         $last_page_no=ceil($total_rows/$rows_per_page);
-        $last="<a href=\"adminairportshow.php?p={$last_page_no}\"><b>Last</b></a>";
+        $last="<a href=\"adminbookinguser.php?p={$last_page_no}\"><b>Last</b></a>";
 
         //next page
         if($page_no>=$last_page_no){
@@ -161,7 +169,7 @@
         }
         else{
             $next_page_no=$page_no+1;
-            $next="<a href=\"adminairportshow.php?p={$next_page_no}\"><b>Next</b></a>";
+            $next="<a href=\"adminbookinguser.php?p={$next_page_no}\"><b>Next</b></a>";
         }
 
         //previous page
@@ -170,25 +178,24 @@
         }
         else{
             $prev_page_no=$page_no-1;
-            $prev="<a href=\"adminairportshow.php?p={$prev_page_no}\"><b>Previous</b></a>";
+            $prev="<a href=\"adminbookinguser.php?p={$prev_page_no}\"><b>Previous</b></a>";
         }
     ?>
         
         <div class="col-12  text-center  text-dark"> 
             <?php echo $first .' | '. $prev .' | <b>Page  '. $page_no . ' of ' .$last_page_no.'</b> | '. $next .' | '. $last ;?>
         </div>
-
+        
 
 
         </div>
     </div>
-
     <div class="container">
         <div class="row">
         <?php if(!isset($_POST['search'])){?>
             <div class="col-6 text-left">
             
-                <form action="adminairportshow.php" method="POST">
+                <form action="adminbookinguser.php" method="POST">
                 Search by payment id :
                 <input type="text" id="filter" name="filter">
                 <button type="submit" name="search" class="btn btn-success btn-sm">Filter</button>
@@ -199,84 +206,116 @@
             <?php
                 if(isset($_POST['search'])){
                     ?>
-                    <a href="adminairportshow.php" type="button" class="btn btn-success btn-sm">All vehicle reservation</a>
+                    <a href="adminbookinguser.php" type="button" class="btn btn-success btn-sm">All User Details</a>
                 <?php
                 }
             ?>
         </div>
     </div>
     <!-- edit booking modal start-->
-    <div class="modal" id="editmodal" tabindex="-1" role="dialog">
+    <!-- <div class="modal" id="editmodal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Vehicle Reservation</h5>
+                <h5 class="modal-title">Edit Room Reservation</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="adminupdateairportpickup.php" method="POST">
+            <form action="adminupdatebooking.php" method="POST">
             <div class="modal-body">
-                <div class="row text-center">
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Vehicle_Reservation_Id</lable><br/>
-                            <input type="text" id="vehicle_reservation_id" name="vehicle_reservation_id" readonly>
-                        </div>
-                    </div>
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Vehicle_Id</lable><br/>
-                            <input type="text" id="vehicle_id" name="vehicle_id" readonly>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row text-center">
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Customer_Id</lable><br/>
-                            <input type="text" id="customer_id" name="customer_id" readonly>
-                        </div>
-                    </div>
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Flight_No</lable><br/>
-                            <input type="text" id="flight_no" name="flight_no">
+                <div class="row">
+                    <div class="col-12 form-group"> 
+                        <div class="row">
+                        
+                            <div class="col-6">
+                                <lable><b>Customer_ID</b></lable><br/>
+                                <input type='text'name="customer_id" id="customer_id" class="form-control input-box form-rounded" placeholder="first name" required>
+                            </div>
+                            <div class="col-6">
+                                <lable><b>Customer_Type</b></lable><br/>
+                                <input type='text' name="customer_type" id="customer_type" class="form-control input-box form-rounded" placeholder="last name" required>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="row text-center">
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Payment_Id</lable><br/>
-                            <input type="text" id="payment_id" name="payment_id">
-                        </div>
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <lable><b>Name</b></lable>
+                        <input type='text' name='name' id="name" class="form-control input-box form-rounded" placeholder="Email" required>
                     </div>
                 </div>
 
-                <div class="row text-center">
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Pick_Up_date</lable><br/>
-                            <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input  class="form-control" id="pick_up_date" name="pick_up_date" type="text" readonly /> 
-                                <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
-                            </div> 
-                        </div>
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <lable><b>Email</b></lable>
+                        <input type='text' name='email' id="email" class="form-control input-box form-rounded" placeholder="Email" required>
                     </div>
-                    <div class="col-4 offset-1">
-                        <div class="form-group">
-                            <lable>Pick_Up_Time</lable><br/>
-                                <input class="form-control" id="pick_up_time" name="pick_up_time" type="time" readonly />
-                            </div> 
-                        </div>
-                    </div>
-                
-               
+                </div>
 
-            </div>
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <lable><b>Contact_No</b></lable>
+                        <input type='text' name='pno' id="pno" class="form-control input-box form-rounded" placeholder="Email" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12 form-group"> 
+                        <div class="row">
+                        
+                            <div class="col-6">
+                                <lable><b>Age</b></lable><br/>
+                                <input type='text'name="age" id="age" class="form-control input-box form-rounded" placeholder="first name" required>
+                            </div>
+                            <div class="col-6">
+                                <lable><b>Country</b></lable><br/>
+                                <input type='text' name="country" id="country" class="form-control input-box form-rounded" placeholder="last name" required>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <!-- <div class="row text-center">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <lable>Name</lable><br/>
+                            <input type="text" id="name" name="name" readonly>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <lable>Email</lable><br/>
+                            <input type="text" id="email" name="email">
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <lable>Contact_No</lable><br/>
+                            <input type="text" id="pno" name="pno">
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- <div class="row text-center">
+                    <div class="col-4 offset-1">
+                        <div class="form-group">
+                            <lable>Age</lable><br/>
+                            <input type="text" id="age" name="age">
+                        </div>
+                    </div>
+                    <div class="col-4 offset-1">
+                        <div class="form-group">
+                            <lable>Country</lable><br/>
+                            <input type="text" id="country" name="country">
+                        </div>
+                    </div>
+                </div> -->
+
+
+            <!-- </div>
             <div class="modal-footer">
                 
                 <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
@@ -285,13 +324,14 @@
             </form>
         </div>
         </div>
-        </div>
+        </div> -->
+        
     
     <!-- edit room booking modal end-->
 
 
         <!-- add booking modal start-->
-        <div class="modal" id="addmodal" tabindex="-1" role="dialog">
+        <!-- <div class="modal" id="addmodal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
@@ -300,7 +340,7 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="adminaddairport.php" method="POST">
+            <form action="adminaddbooking.php" method="POST">
             <div class="modal-body">
             <div class="row">
             <div class="col-12">
@@ -364,13 +404,13 @@
                     </div>
                         <div class="row">
                             <div class="col-12 form-group">
-                            <lable><b> Vehicle Type:</b></lable>
-                                <select class="form-control w-100 input-box form-rounded" name="vtype">  
-                                        <option value="Budget">Budget</option>
-                                        <option value="City">City</option>
-                                        <option value="Car">Car</option>
-                                        <option value="Minivan">Minivan</option>
-                                        <option value="Van">Van</option>  
+                            <lable><b> Room Type:</b></lable>
+                                <select class="form-control w-100 input-box form-rounded" name="room_type">  
+                                        <option value="Deluxe city facing room">Deluxe city facing room</option>
+                                        <option value="Deluxe ocean facing room">Deluxe ocean facing room</option>
+                                        <option value="Luxury city view room">Luxury city view room</option>
+                                        <option value="Luxury ocean view room">Luxury ocean view room</option>
+                                        <option value="Executive suite">Executive suite</option>  
                                     </select>
                             </div>
                         </div>
@@ -378,28 +418,66 @@
                     <div class="row">
                     <div class="col-4 offset-1">
                         <div class="form-group">
-                            <lable>Pick_Up_Date</lable><br/>
+                            <lable>Check_In_Date</lable><br/>
                             <div id="datepicker2" class="input-group date" data-date-format="yyyy-mm-dd">
-                                <input  class="form-control" id="pick_up_date" name="date" type="text" readonly /> 
+                                <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
                     </div>
                     <div class="col-4 offset-1">
                         <div class="form-group">
-                            <lable>Pick_Up_Time</lable><br/>
-                                <input class="form-control" id="pick_up_time" name="time" type="time">    
+                            <lable>Check_Out_Date</lable><br/>
+                            <div id="datepicker3" class="input-group date" data-date-format="yyyy-mm-dd">
+                                <input class="form-control" id="check_out_date" name="checkout" type="text"  readonly />
+                                <span class="input-group-addon"><i class="fa fa-calendar p-1 mt-1"></i></span>
                             </div> 
                         </div>
-                    
+                    </div>
                 </div>
 
-                <div class="row">
+                 
+ 
+                    
+            <div class="row">
                     <div class="col-6 form-group">
                         
-                        <lable>Flight_No</lable><br/>
-                        <input type="text" id="flight_no" name="fno">
-                       
+                        <lable><b> Adults:</b></lable>
+                        <select class="form-control w-100 input-box form-rounded" name="adults" required>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                                        
+                        </select>
+
+                    </div>
+
+                    <div class="col-6 form-group">
+                        
+                        <lable><b> Children:</b></lable>
+                        <select class="form-control w-100 input-box form-rounded" name="children" required>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>                           
+                        </select>
+                    </div>
+                    </div>
+
+                    <div class="row">
+                    <div class="col-6 form-group">
+                        
+                                <lable><b> No of Rooms:</b></lable>
+                                <select class="form-control w-100 input-box form-rounded" name="no_of_rooms" required>
+                                        
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        
+                                    </select>
 
                     </div>
                     <div class="col-6 form-group">
@@ -410,7 +488,7 @@
                                         <option value="cash">Cash</option>
                                         <option value="online">Online</option>
         
-                                </select>
+                                    </select>
 
                     </div>
                 </div>
@@ -428,7 +506,7 @@
             </form>
         </div>
         </div>
-        </div>
+        </div> -->
     
     <!-- add room booking modal end-->
     
@@ -445,7 +523,7 @@
         <!-- Menu Toggle Script -->
 
  <!-- modal update start -->
- <script>
+ <!-- <script>
         $(document).ready(function(){
             $('.editbtn').on('click',function(){
                 $('#editmodal').modal('show');
@@ -457,17 +535,16 @@
 
                 console.log(data);
 
-                $('#vehicle_reservation_id').val(data[0]);
-                $('#vehicle_id').val(data[1]);
-                $('#customer_id').val(data[2]);
-                $('#flight_no').val(data[3]);
-                $('#payment_id').val(data[4]);
-                $('#pick_up_date').val(data[5]);
-                $('#pick_up_time').val(data[6]);
-                
+                $('#customer_id').val(data[0]);
+                $('#customer_type').val(data[1]);
+                $('#name').val(data[2]);
+                $('#email').val(data[3]);
+                $('#pno').val(data[4]);
+                $('#age').val(data[5]);
+                $('#country').val(data[6]);
             });
         });
-    </script>
+    </script> -->
     <!-- modal update end -->   
          <script>
             $("#menu-toggle").click(function(e) {
@@ -476,68 +553,6 @@
             });    
         </script>  
         
-        <?php
-      echo '<script>';
-      if(isset($_SESSION['delete'])){
-        if($_SESSION['delete']==1){ 
-          echo 'swal({
-            title: "",
-            text: "Deleted Successfully!",
-            icon: "success",
-            button: "Ok",
-          });';
-          
-          //session_destroy(); 
-         }
-         if($_SESSION['delete']==2){
-            echo 'swal({
-                title: "",
-                text: "Error, not Deleted!",
-                icon: "error",
-                button: "Ok",
-              });'; 
-         }
-         unset($_SESSION['delete']);
-        }
-
-    echo '</script>';
-         
-    ?>
-    <script>
-         $(function () {
-            $("#datepicker").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-            }).datepicker('update', new Date());
-          });
-
-        //   $(function () {
-        //     $("#datepicker1").datepicker({ 
-        //           autoclose: true, 
-        //           todayHighlight: true
-                  
-        //     }).datepicker('update', new Date());
-        //   });
-
-          $(function () {
-            $("#datepicker2").datepicker({ 
-                  autoclose: true, 
-                  todayHighlight: true
-            }).datepicker('update', new Date());
-          });
-
-        //   $(function () {
-        //     $("#datepicker3").datepicker({ 
-        //           autoclose: true, 
-        //           todayHighlight: true
-                  
-        //     }).datepicker('update', new Date());
-        //   });
-
-          // for validation
-          
-          
-    </script>
     <?php
         echo '<script>';
         if(isset($_SESSION['emailsent'])){

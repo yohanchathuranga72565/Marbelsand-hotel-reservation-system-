@@ -4,6 +4,18 @@
 
  include 'checkin.php';
 
+    $room=0.0;
+    $queryroom = "SELECT * FROM room_type";
+    $resultsetroom = mysqli_query($connection,$queryroom);
+
+    foreach($resultsetroom as $row){
+        if($row['type_id']== 1){
+            $room = $row['room_price'];
+
+
+        }
+    }
+
  if(isset($_SESSION['check'])){
  echo '<div class="modal fade" id="roomtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -15,6 +27,7 @@
        <div class="container-fluid">';
      if($totalnoofroomsitem1<23){
         $freerooms=23-$totalnoofroomsitem1;
+
       echo '<div class="row">';
              echo '<div class="col-12 pb-3 d-flex justify-content-center">';
                  echo '<div class="card" style="width: 18rem;">';
@@ -23,10 +36,8 @@
                          echo '<p class="card-text"><b>Deluxe City Facing room</b><br/>';
                          echo 'Max: 3 Person(s)<br/>';
                          echo 'Max: 2 Child(s)<br/>' ;
-                         echo 'Get 10% discount by booking before 21st April 2020</br>';
                          echo 'you have ' . $freerooms . ' free rooms </br>';
-                         echo '<span class="badge badge-pill badge-secondary">$135</span>';
-                         echo '<span class="badge badge-pill badge-secondary"><del>$150</del></span>'; 
+                         echo '<span class="badge badge-pill badge-secondary">$'.$room.'</span>'; 
                          echo '</p>';
                      echo '</div>';
                      echo '<div class="card-footer d-flex justify-content-center">';
@@ -172,7 +183,7 @@ unset($_SESSION['check']);
         <div class="row">
                     <div class="col-4 offset-1">
                         <div class="form-group">
-                            <lable>Check_In_date</lable><br/>
+                            <lable>Check_In_Date</lable><br/>
                             <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
                                 <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>

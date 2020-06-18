@@ -53,6 +53,7 @@ include 'connection.php';
              
 
             <?php
+                $rows_per_page=0;
                 if(isset($_GET['user_type'])){
                     $filter=$_GET['user_type'];
                 }
@@ -75,7 +76,7 @@ include 'connection.php';
                     $start=($page_no-1) * $rows_per_page;
 
 
-                    $query="SELECT * FROM login WHERE user_type='{$filter}'";
+                    $query="SELECT * FROM login WHERE user_type='{$filter}' LIMIT {$start},{$rows_per_page}";
                     $query_run=mysqli_query($connection,$query);
                     $name1='';
                     $pno1='';
@@ -97,7 +98,7 @@ include 'connection.php';
                     $start=($page_no-1) * $rows_per_page;
 
 
-                    $query="SELECT * FROM login";
+                    $query="SELECT * FROM login LIMIT {$start},{$rows_per_page}";
                     $query_run=mysqli_query($connection,$query);
                     $name1='';
                     $pno1=''; 
@@ -167,7 +168,7 @@ include 'connection.php';
                                     }
                                 }
                         ?>
-                    <tbody action="adminbookshow.php" method="POST">
+                    <tbody action="adminuserdetails.php" method="POST">
                         <tr>
                             <td><?php echo $name1; ?></td>
                             <td><?php echo $pno1; ?></td>

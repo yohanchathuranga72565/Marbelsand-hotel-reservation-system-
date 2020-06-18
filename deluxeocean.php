@@ -5,6 +5,18 @@
 
  include 'checkin.php';
 
+ $room=0.0;
+    $queryroom = "SELECT * FROM room_type";
+    $resultsetroom = mysqli_query($connection,$queryroom);
+
+    foreach($resultsetroom as $row){
+        if($row['type_id']== 2){
+            $room = $row['room_price'];
+
+
+        }
+    }
+
  if(isset($_SESSION['check'])){
  echo '<div class="modal fade" id="roomtype" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
  <div class="modal-dialog modal-dialog-centered" role="document">
@@ -24,11 +36,10 @@
                 <div class="card-body">
                 <p class="card-text"><b>Deluxe Ocean Facing room</b><br/>
                   Max: 3 Person(s)<br/>
-                  Max: 2 Child(s)<br/>
-                  Get 10% discount by booking before 21st April 2020</br>';
+                  Max: 2 Child(s)<br/>';
                   echo 'you have ' . $freerooms . ' free rooms </br>';
-              echo '<span class="badge badge-pill badge-secondary">$126</span>
-              <span class="badge badge-pill badge-secondary"><del>$140</del></span>
+              echo '
+              <span class="badge badge-pill badge-secondary">$'.$room.'</span>
                 </p>
                 </div>
                 <div class="card-footer d-flex justify-content-center">

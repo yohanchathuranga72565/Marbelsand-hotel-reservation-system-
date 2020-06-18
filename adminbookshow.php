@@ -48,31 +48,67 @@ include 'connection.php';
              
 
             <?php 
-                $query0="SELECT reservation_id FROM room_reservation";
-                $query_run0=mysqli_query($connection,$query0);
-                $total_rows=mysqli_num_rows($query_run0);
-                $rows_per_page=6;
+                $filter=0;
+                if(isset($_POST['search'])){
+                    $filter=$_POST['filter'];
+                    echo $filter;
+                    $query0="SELECT reservation_id FROM room_reservation WHERE reservation_id='{$filter}'";
+                    $query_run0=mysqli_query($connection,$query0);
+                    $total_rows=mysqli_num_rows($query_run0);
+                    $rows_per_page=6;
 
-                if(isset($_GET['p'])){
-                    $page_no=$_GET['p']; 
-                }
-                else{
-                    $page_no=1; 
-                }
-
-             
-                $start=($page_no-1) * $rows_per_page;
+                    if(isset($_GET['p'])){
+                        $page_no=$_GET['p']; 
+                    }
+                    else{
+                        $page_no=1; 
+                    }
 
                 
+                    $start=($page_no-1) * $rows_per_page;
 
-                $query="SELECT * FROM room_reservation LIMIT {$start},{$rows_per_page}";
-                $query_run=mysqli_query($connection,$query);
+                    
+
+                    $query="SELECT * FROM room_reservation WHERE reservation_id='{$filter}' LIMIT {$start},{$rows_per_page}";
+                    $query_run=mysqli_query($connection,$query);
+                    
+                    
+
+                }
+                else{
+                    $query0="SELECT reservation_id FROM room_reservation";
+                    $query_run0=mysqli_query($connection,$query0);
+                    $total_rows=mysqli_num_rows($query_run0);
+                    $rows_per_page=6;
+
+                    if(isset($_GET['p'])){
+                        $page_no=$_GET['p']; 
+                    }
+                    else{
+                        $page_no=1; 
+                    }
+
+                
+                    $start=($page_no-1) * $rows_per_page;
+
+                    
+
+                    $query="SELECT * FROM room_reservation LIMIT {$start},{$rows_per_page}";
+                    $query_run=mysqli_query($connection,$query);
+
+                }
+
+                
             
             ?>
             <h2 class="text-center">About Rooms Bookings</h2>
             <div class="text-right">
-                <a href="admincheckroom.php" type="button" class="btn btn-success btn-sm">Check room availability</a>
                 <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#addmodal">Add new booking</button>
+                <a href="admincheckroom.php" type="button" class="btn btn-success btn-sm">Check room availability</a>
+                <a href="adminpayment.php" type="button" class="btn btn-success btn-sm">Payment Details</a>
+                <a href="adminbookinguser.php" type="button" class="btn btn-success btn-sm">User Details</a>
+                
+                
             </div>
                 <table class="table">
                     <thead class="thead-dark">
@@ -86,6 +122,7 @@ include 'connection.php';
                         <th scope="col">No_Guest</th>
                         <th scope="col">Type_Id</th>
                         <th scope="col">No_Of_Rooms</th>
+                        <!-- <th scope="col"></th> -->
                         <th scope="col"></th>
                         <th scope="col"></th>
                         </tr>
@@ -107,8 +144,9 @@ include 'connection.php';
                             <td><?php echo $row['no_guest']; ?></td>
                             <td><?php echo $row['type_id']; ?></td>
                             <td><?php echo $row['no_of_rooms']; ?></td>
-                            <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</button></td>
-                            <td><a href=adminbookdelete.php?id=<?php echo $row['reservation_id'];?> type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
+                            <!-- <td><a href="#"  class="morebtn" >More</a></td> -->
+                            <td><a href="#" type="button"  class="btn btn-success btn-sm editbtn" >Edit</a></td>
+                            <td><a href="adminbookdelete.php?id=<?php echo $row['reservation_id'];?>&pid=<?php echo $row['payment_id'];?>&cid=<?php echo $row['customer_id'];?>" type="button"  class="btn btn-danger btn-sm" >Delete</a></td>
                             
                         </tr>
                     </tbody>
@@ -158,6 +196,29 @@ include 'connection.php';
 
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+        <?php if(!isset($_POST['search'])){?>
+            <div class="col-6 text-left">
+            
+                <form action="adminbookshow.php" method="POST">
+                Search by payment id :
+                <input type="text" id="filter" name="filter">
+                <button type="submit" name="search" class="btn btn-success btn-sm">Filter</button>
+                </form>
+            
+            </div>\
+            <?php } ?>
+            <?php
+                if(isset($_POST['search'])){
+                    ?>
+                    <a href="adminbookshow.php" type="button" class="btn btn-success btn-sm">All Booking</a>
+                <?php
+                }
+            ?>
+        </div>
+    </div>
+
     <!-- edit booking modal start-->
     <div class="modal" id="editmodal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -188,7 +249,7 @@ include 'connection.php';
                 <div class="row text-center">
                     <div class="col-4 offset-1">
                         <div class="form-group">
-                            <lable>Check_In_date</lable><br/>
+                            <lable>Check_In_Date</lable><br/>
                             <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
                                 <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>
@@ -348,7 +409,7 @@ include 'connection.php';
                     <div class="row">
                     <div class="col-4 offset-1">
                         <div class="form-group">
-                            <lable>Check_In_date</lable><br/>
+                            <lable>Check_In_Date</lable><br/>
                             <div id="datepicker2" class="input-group date" data-date-format="yyyy-mm-dd">
                                 <input  class="form-control" id="check_in_date" name="checkin" type="text" readonly /> 
                                 <span class="input-group-addon"> <i class="fa fa-calendar p-1 mt-1"></i></span>

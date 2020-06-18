@@ -565,6 +565,35 @@ include 'searchroom.php';
     <!--introduction end-->
     <hr/>
     <!--hotel rooms start-->
+    <?php
+      // $room1=0.0;
+      // $room2=0.0;
+      // $room3=0.0;
+      // $room4=0.0;
+      // $room5=0.0;
+      // $queryroom = "SELECT * FROM room_type";
+      // $resultsetroom = mysqli_query($connection,$queryroom);
+
+      // foreach($resultsetroom as $row){
+      //   if($row['type_id']== 1){
+      //     $room1 = $row['room_price'];
+      //   }
+      //   else if($row['type_id']== 2){
+      //     $room2 = $row['room_price'];
+      //   }
+      //   else if($row['type_id']== 3){
+      //     $room3 = $row['room_price'];
+      //   }
+      //   else if($row['type_id']== 4){
+      //     $room4 = $row['room_price'];
+      //   }
+      //   else{
+      //     $room5 = $row['room_price'];
+      //   }
+
+      // }
+    
+    ?>
     <div class="container">
         <div class="row wow slideInUp">
          
@@ -575,9 +604,9 @@ include 'searchroom.php';
               <p class="card-text"><b>Deluxe City Facing room</b><br/>
               Max: 3 Person(s)<br/>
               Max: 2 Child(s)<br/>
-              Get 10% discount by booking before 21st April 2020</br>
-              <span class="badge badge-pill badge-secondary">$135</span>
-              <span class="badge badge-pill badge-secondary"><del>$150</del></span> 
+              <!-- Get 10% discount by booking before 21st April 2020</br> -->
+              <!-- <span class="badge badge-pill badge-secondary">$135</span> -->
+              <span class="badge badge-pill badge-secondary"><?php echo '$'.$room1;?></span></br> 
               <a href="deluxecity.php" class="btn btn-sm btn-deep-orange">More Information>></a> 
             </p>
             </div>
@@ -594,9 +623,9 @@ include 'searchroom.php';
             <p class="card-text"><b>Deluxe Ocean Facing room</b><br/>
               Max: 3 Person(s)<br/>
               Max: 2 Child(s)<br/>
-              Get 10% discount by booking before 21st April 2020</br>
-              <span class="badge badge-pill badge-secondary">$126</span>
-              <span class="badge badge-pill badge-secondary"><del>$140</del></span>
+              <!-- Get 10% discount by booking before 21st April 2020</br>
+              <span class="badge badge-pill badge-secondary">$126</span> -->
+              <span class="badge badge-pill badge-secondary"><?php echo '$'.$room2;?></span></br>
               <a href="deluxeocean.php" class="btn btn-sm btn-deep-orange">More Information>></a>
             </p>
             </div>
@@ -610,9 +639,9 @@ include 'searchroom.php';
               <p class="card-text"><b>Luxury City View room</b><br/>
               Max: 3 Person(s)<br/>
               Max: 2 Child(s)<br/>
-              Get 10% discount by booking before 21st April 2020</br>
-              <span class="badge badge-pill badge-secondary">$117</span>
-              <span class="badge badge-pill badge-secondary"><del>$130</del></span>
+              <!-- Get 10% discount by booking before 21st April 2020</br>
+              <span class="badge badge-pill badge-secondary">$117</span> -->
+              <span class="badge badge-pill badge-secondary"><?php echo '$'.$room3;?></span></br>
               <a href="luxurycity.php" class="btn btn-sm btn-deep-orange">More Information>></a>
             </p>
             </div>
@@ -631,9 +660,9 @@ include 'searchroom.php';
                 <p class="card-text"><b>Luxury Ocean View room</b><br/>
                 Max: 3 Person(s)<br/>
                 Max: 2 Child(s)<br/>
-                Get 10% discount by booking before 21st April 2020</br>
-              <span class="badge badge-pill badge-secondary">$108</span>
-              <span class="badge badge-pill badge-secondary"><del>$120</del></span>
+                <!-- Get 10% discount by booking before 21st April 2020</br>
+              <span class="badge badge-pill badge-secondary">$108</span> -->
+              <span class="badge badge-pill badge-secondary"><?php echo '$'.$room4;?></span></br>
               <a href="luxuryocean.php" class="btn btn-sm btn-deep-orange">More Information>></a>
               </p>
               </div>
@@ -650,9 +679,9 @@ include 'searchroom.php';
               <p class="card-text"><b>Executive Suite</b><br/>
                 Max: 3 Person(s)<br/>
                 Max: 2 Child(s) <br/>
-                Get 10% discount by booking before 21st April 2020</br>
-              <span class="badge badge-pill badge-secondary">$90</span>
-              <span class="badge badge-pill badge-secondary"><del>$100</del></span>
+                <!-- Get 10% discount by booking before 21st April 2020</br>
+              <span class="badge badge-pill badge-secondary">$90</span> -->
+              <span class="badge badge-pill badge-secondary"><?php echo '$'.$room5;?></span></br>
               <a href="executivesuit.php" class="btn btn-sm btn-deep-orange">More Information>></a>  
               </p>
               </div>
